@@ -835,3 +835,73 @@ void CPU::compare(uint8_t target) {
     updateFlagZ(tmp & 0xFF);
     updateFlagN(tmp & 0xff);
 }
+
+std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
+    std::map<uint16_t , std::string> rst;
+    uint16_t addr = start;
+
+    auto hex = [](uint32_t n, uint8_t d) {
+        std::string s(d, '0');
+        for (int i = d - 1; i >= 0; i--, n >>= 4) {
+            s[i] = "0123456789ABCDEF"[n & 0xcF];
+        }
+        return s;
+    };
+
+    auto read8 = [&addr, this]() {
+        return bus->read(addr++, true);
+    };
+
+    auto read16 = [&read8]() {
+        auto lo = read8();
+        auto hi = read8();
+        return lo | hi << 8;
+    };
+
+    while (addr <= end) {
+        auto op = read8();
+        std::string sInst = "$" + hex(addr, 4) + ":";
+        uint8_t value, lo;
+        auto line_addr = addr;
+
+        auto inst = lookup[op];
+
+        sInst += inst.name + " ";
+
+        if (inst.addrmode == &CPU::IMP) {
+            sInst += " {IMP}";
+        } else if (inst.addrmode == &CPU::IMM) {
+            value = read8();
+            sInst += "#$" + hex(value, 2) + " {IMM}";
+        } else if (inst.addrmode == &CPU::ZP0) {
+            sInst += "$" + hex(read8(), 2) + " {ZP0}";
+        } else if (inst.addrmode == &CPU::ZPX) {
+            lo = read8();
+            sInst += "$" + hex(lo, 2) + ", X {ZPX}";
+        } else if (inst.addrmode == &CPU::ZPY) {
+            lo = read8();
+            sInst += "$" + hex(lo, 2) + ", Y {ZP0}";
+        } else if (inst.addrmode == &CPU::IZX) {
+            lo = read8();
+            sInst += "$" + hex(lo, 2) + ", X) {IZX}";
+        } else if (inst.addrmode == &CPU::IZY) {
+            lo = read8();
+            sInst += "$" + hex(lo, 2) + "), Y {IZY}";
+        } else if (inst.addrmode == &CPU::ABS) {
+            sInst += "$" + hex(read16(), 4) + " {ABS}";
+        } else if (inst.addrmode == &CPU::ABX) {
+            sInst += "$" + hex(read16(), 4) + ", X {ABX}";
+        } else if (inst.addrmode == &CPU::ABY) {
+            sInst += "$" + hex(read16(), 4) + ", Y {ABY}";
+        } else if (inst.addrmode == &CPU::IND) {
+            sInst += "($" + hex(read16(), 4) + ") {IND}";
+        } else if (inst.addrmode == &CPU::REL) {
+            value = read8();
+            sInst += "($" + hex(value, 2) + "[$ " + hex(addr + value, 4)  + "] {REL}";
+        }
+
+        rst[line_addr] = sInst;
+    }
+
+    return rst;
+}

@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <map>
 
 class Bus;
 
@@ -91,6 +92,11 @@ public:
 
     uint8_t getFlag(FLAGS f);
     void setFlag(FLAGS f, bool v);
+
+    /**
+     * @return key is instruction start pos, value is the instruction string.
+     */
+    std::map<uint16_t, std::string> disassemble(uint16_t start, uint16_t end);
 
 private:
     Bus *bus;
