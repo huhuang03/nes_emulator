@@ -3,7 +3,11 @@
 //
 
 #include <iostream>
+#include "./cpu_simulator.h"
 
 int main() {
-    std::cout << "Hello enum" << std::endl;
+    CpuSimulator simulator;
+    simulator.Construct(680, 480, 2, 2);
+    simulator.Start();
+    return 0;
 }
