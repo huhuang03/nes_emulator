@@ -838,7 +838,7 @@ void CPU::compare(uint8_t target) {
 
 std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     std::map<uint16_t , std::string> rst;
-    uint16_t addr = start;
+    uint32_t addr = start;
 
     auto hex = [](uint32_t n, uint8_t d) {
         std::string s(d, '0');
@@ -858,6 +858,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
         return lo | hi << 8;
     };
 
+    // 有可能overflow啊。
     while (addr <= end) {
         auto op = read8();
         std::string sInst = "$" + hex(addr, 4) + ":";
@@ -882,11 +883,9 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
             lo = read8();
             sInst += "$" + hex(lo, 2) + ", Y {ZP0}";
         } else if (inst.addrmode == &CPU::IZX) {
-            lo = read8();
-            sInst += "$" + hex(lo, 2) + ", X) {IZX}";
+            sInst += "$" + hex(read8(), 2) + ", X) {IZX}";
         } else if (inst.addrmode == &CPU::IZY) {
-            lo = read8();
-            sInst += "$" + hex(lo, 2) + "), Y {IZY}";
+            sInst += "$" + hex(read8(), 2) + "), Y {IZY}";
         } else if (inst.addrmode == &CPU::ABS) {
             sInst += "$" + hex(read16(), 4) + " {ABS}";
         } else if (inst.addrmode == &CPU::ABX) {
@@ -898,6 +897,8 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
         } else if (inst.addrmode == &CPU::REL) {
             value = read8();
             sInst += "($" + hex(value, 2) + "[$ " + hex(addr + value, 4)  + "] {REL}";
+        } else {
+            throw std::runtime_error("There's some mode we forget");
         }
 
         rst[line_addr] = sInst;

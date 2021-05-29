@@ -11,6 +11,10 @@ Bus::Bus() {
     cpu.connectBus(this);
 }
 
+Bus::~Bus() {
+
+}
+
 void Bus::write(uint16_t addr, uint8_t data) {
     // eat error
     if (addr <= 0xffff) {
