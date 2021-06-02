@@ -105,13 +105,13 @@ void CpuSimulator::drawCode(int x, int y, int nLines) {
 
     int centerY = (nLines >> 2) * 10 + y;
     auto code = mapAsm.find(nes.cpu.pc);
-    std::cout << (code == mapAsm.end()) << hex(nes.cpu.pc, 4) <<  std::endl;
     if (code != mapAsm.end()) {
-        DrawString(x, centerY, code->second);
+        DrawString(x, centerY, code->second, olc::CYAN);
 
         // draw above.
         auto pCode = code;
-        auto pY = centerY;
+        pCode--;
+        auto pY = centerY - 10;
         while (pY >= startY) {
             if (pCode != mapAsm.end()) {
                 DrawString(x, pY, pCode->second);
@@ -124,7 +124,8 @@ void CpuSimulator::drawCode(int x, int y, int nLines) {
 
         // draw below
         pCode = code;
-        pY = centerY;
+        pCode++;
+        pY = centerY + 10;
         while (pY <= endY) {
             if (pCode != mapAsm.end()) {
                 DrawString(x, pY, pCode->second);
