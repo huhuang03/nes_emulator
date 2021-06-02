@@ -48,6 +48,9 @@ bool CpuSimulator::OnUserUpdate(float fElapsedTime) {
     drawRam(2, 2, 0x0000, 16, 16);
     drawRam(2, 182, 0x8000, 16, 16);
     drawCpu(448, 2);
+    drawCode(448, 72, 26);
+
+    DrawString(10, 370, "SPACE = Step Instruction    R = RESET    I = IRQ    N = NMI");
     return true;
 }
 
@@ -94,4 +97,42 @@ void CpuSimulator::drawCpu(int x, int y) {
 
 olc::Pixel CpuSimulator::getFlagColor(CPU::FLAGS flag) {
     return nes.cpu.getFlag(flag)? olc::GREEN : olc::RED;
+}
+
+void CpuSimulator::drawCode(int x, int y, int nLines) {
+    int startY = y;
+    int endY = (nLines - 1) * 10 + y;
+
+    int centerY = (nLines >> 2) * 10 + y;
+    auto code = mapAsm.find(nes.cpu.pc);
+    std::cout << (code == mapAsm.end()) << hex(nes.cpu.pc, 4) <<  std::endl;
+    if (code != mapAsm.end()) {
+        DrawString(x, centerY, code->second);
+
+        // draw above.
+        auto pCode = code;
+        auto pY = centerY;
+        while (pY >= startY) {
+            if (pCode != mapAsm.end()) {
+                DrawString(x, pY, pCode->second);
+                pCode--;
+                pY -= 10;
+            } else {
+                break;
+            }
+        }
+
+        // draw below
+        pCode = code;
+        pY = centerY;
+        while (pY <= endY) {
+            if (pCode != mapAsm.end()) {
+                DrawString(x, pY, pCode->second);
+                pCode++;
+                pY += 10;
+            } else {
+                break;
+            }
+        }
+    }
 }

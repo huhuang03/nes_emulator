@@ -21,6 +21,8 @@ private:
 
     void drawCpu(int x, int y);
 
+    void drawCode(int x, int y, int nLines);
+
     olc::Pixel getFlagColor(CPU::FLAGS flag);
 
 public:
