@@ -45,6 +45,21 @@ bool CpuSimulator::OnUserCreate() {
 bool CpuSimulator::OnUserUpdate(float fElapsedTime) {
     Clear(olc::DARK_BLUE);
 
+    if (GetKey(olc::Key::SPACE).bPressed) {
+        do {
+            nes.cpu.clock();
+        } while (!nes.cpu.complete());
+    }
+
+    if (GetKey(olc::Key::R).bPressed)
+        nes.cpu.reset();
+
+    if (GetKey(olc::Key::I).bPressed)
+        nes.cpu.irq();
+
+    if (GetKey(olc::Key::N).bPressed)
+        nes.cpu.nmi();
+
     drawRam(2, 2, 0x0000, 16, 16);
     drawRam(2, 182, 0x8000, 16, 16);
     drawCpu(448, 2);
@@ -103,7 +118,7 @@ void CpuSimulator::drawCode(int x, int y, int nLines) {
     int startY = y;
     int endY = (nLines - 1) * 10 + y;
 
-    int centerY = (nLines >> 2) * 10 + y;
+    int centerY = (nLines >> 1) * 10 + y;
     auto code = mapAsm.find(nes.cpu.pc);
     if (code != mapAsm.end()) {
         DrawString(x, centerY, code->second, olc::CYAN);

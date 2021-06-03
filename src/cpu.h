@@ -18,6 +18,8 @@ public:
     CPU();
     ~CPU();
 
+    bool complete();
+
 public:
     enum FLAGS
     {

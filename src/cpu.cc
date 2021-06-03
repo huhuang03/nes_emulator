@@ -863,7 +863,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     while (addr <= end) {
         auto line_addr = addr;
         auto op = read8();
-        std::string sInst = "$" + hex(line_addr, 4) + ":";
+        std::string sInst = "$" + hex(line_addr, 4) + ": ";
         uint8_t value, lo;
 
         auto inst = lookup[op];
@@ -897,7 +897,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
             sInst += "($" + hex(read16(), 4) + ") {IND}";
         } else if (inst.addrmode == &CPU::REL) {
             value = read8();
-            sInst += "($" + hex(value, 2) + "[$ " + hex(addr + value, 4)  + "] {REL}";
+            sInst += "$" + hex(value, 2) + " [$" + hex(addr + value, 4)  + "] {REL}";
         } else {
             throw std::runtime_error("There's some mode we forget");
         }
@@ -906,4 +906,8 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     }
 
     return rst;
+}
+
+bool CPU::complete() {
+    return this->cycles == 0;
 }
