@@ -5,6 +5,7 @@
 #include "cpu.h"
 #include "bus.h"
 #include <exception>
+#include <stdexcept>
 
 CPU::CPU() {
     using a = CPU;
