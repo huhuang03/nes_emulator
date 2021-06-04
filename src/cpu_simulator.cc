@@ -31,10 +31,10 @@ bool CpuSimulator::OnUserCreate() {
         // yes, this will jump space.
         std::string b;
         ss >> b;
-        nes.write(nOffset++, (uint8_t)std::stol(b, nullptr, 16));
+        nes.cpuWrite(nOffset++, (uint8_t) std::stol(b, nullptr, 16));
     }
-    nes.write(0xFFFC, 0x00);
-    nes.write(0xFFFD, 0x80);
+    nes.cpuWrite(0xFFFC, 0x00);
+    nes.cpuWrite(0xFFFD, 0x80);
 
     // seems block at here??
     mapAsm = nes.cpu.disassemble(0x0000, 0xFFFF);
@@ -82,7 +82,7 @@ void CpuSimulator::drawRam(int x, int y, uint16_t nAddr, int nRows, int nColumns
     for (int row = 0; row < nRows; row++) {
         std::string sOffsets = "$" + hex(nAddr, 4) + ":";
         for (int col = 0; col < nColumns; col++) {
-            auto hexStr = hex(nes.read(nAddr++, true), 2);
+            auto hexStr = hex(nes.cpuRead(nAddr++, true), 2);
             sOffsets += " " + hexStr;
         }
         DrawString(nRamX, nRamY, sOffsets);

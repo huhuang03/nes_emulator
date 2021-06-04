@@ -114,7 +114,7 @@ uint8_t CPU::REL() {
 // normally read_16(read_16(pc)), but that's a bug.
 // This instruction is unusual in that it has a bug in the hardware! To emulate its
 // function accurately, we also need to emulate this bug. If the low byte of the
-// supplied address is 0xFF, then to read the high byte of the actual address
+// supplied address is 0xFF, then to cpuRead the high byte of the actual address
 // we need to cross a page boundary. This doesnt actually work on the chip as
 // designed, instead it wraps back around in the same page, yielding an
 // invalid actual address
@@ -652,10 +652,10 @@ uint8_t CPU::SBC() {
 
 
 uint8_t CPU::RTI() {
-    // read the pc
+    // cpuRead the pc
     pc = pop16();
 
-    // read the status
+    // cpuRead the status
     status = pop16();
     // clear the B and U
     setFlag(B, false);
@@ -715,11 +715,11 @@ void CPU::nmi() {
 }
 
 uint8_t CPU::read(uint16_t addr) {
-    return bus->read(addr, false);
+    return bus->cpuRead(addr, false);
 }
 
 void CPU::write(uint16_t addr, uint8_t data) {
-    bus->write(addr, data);
+    bus->cpuWrite(addr, data);
 }
 
 void CPU::clock() {
@@ -851,7 +851,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     };
 
     auto read8 = [&addr, this]() {
-        return bus->read(addr++, true);
+        return bus->cpuRead(addr++, true);
     };
 
     auto read16 = [&read8]() {

@@ -1542,7 +1542,7 @@ namespace olc
 		for (uint32_t i = 0; i < nMapEntries; i++)
 		{
 			uint32_t nFilePathSize = 0;
-			read((char*)&nFilePathSize, sizeof(uint32_t));
+			cpuRead((char*)&nFilePathSize, sizeof(uint32_t));
 
 			std::string sFileName(nFilePathSize, ' ');
 			for (uint32_t j = 0; j < nFilePathSize; j++)
@@ -1628,7 +1628,7 @@ namespace olc
 		// at start of file
 		ofs.seekp(0, std::ios::beg);
 		ofs.write((char*)&nIndexStringLen, sizeof(uint32_t));
-		ofs.write(sIndexString.data(), nIndexStringLen);
+		ofs.cpuWrite(sIndexString.data(), nIndexStringLen);
 		ofs.close();
 		return true;
 	}
