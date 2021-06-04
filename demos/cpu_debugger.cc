@@ -2,9 +2,11 @@
 // Created by huhua on 2021/5/26.
 //
 
+#include "cpu_debugger.h"
 #include "cpu_simulator.h"
 
-bool CpuSimulator::OnUserCreate() {
+
+bool CPUDebugger::OnUserCreate() {
     // Load Program (assembled at https://www.masswerk.at/6502/assembler.html)
     /*
         *=$8000
@@ -42,7 +44,7 @@ bool CpuSimulator::OnUserCreate() {
     return true;
 }
 
-bool CpuSimulator::OnUserUpdate(float fElapsedTime) {
+bool CPUDebugger::OnUserUpdate(float fElapsedTime) {
     Clear(olc::DARK_BLUE);
 
     if (GetKey(olc::Key::SPACE).bPressed) {
@@ -69,7 +71,7 @@ bool CpuSimulator::OnUserUpdate(float fElapsedTime) {
     return true;
 }
 
-std::string CpuSimulator::hex(uint32_t n, uint8_t d) {
+std::string CPUDebugger::hex(uint32_t n, uint8_t d) {
     std::string s(d, '0');
     for (int i = d - 1; i >= 0; i--, n >>= 4) {
         s[i] = "0123456789ABCDEF"[n & 0xF];
@@ -77,7 +79,7 @@ std::string CpuSimulator::hex(uint32_t n, uint8_t d) {
     return s;
 }
 
-void CpuSimulator::drawRam(int x, int y, uint16_t nAddr, int nRows, int nColumns) {
+void CPUDebugger::drawRam(int x, int y, uint16_t nAddr, int nRows, int nColumns) {
     int nRamX = x, nRamY = y;
     for (int row = 0; row < nRows; row++) {
         std::string sOffsets = "$" + hex(nAddr, 4) + ":";
@@ -90,7 +92,7 @@ void CpuSimulator::drawRam(int x, int y, uint16_t nAddr, int nRows, int nColumns
     }
 }
 
-void CpuSimulator::drawCpu(int x, int y) {
+void CPUDebugger::drawCpu(int x, int y) {
     std::string status = "STATUS: ";
     DrawString(x, y, "STATUS:", olc::WHITE);
     DrawString(x + 64, y, "N", getFlagColor(CPU::N));
@@ -110,11 +112,11 @@ void CpuSimulator::drawCpu(int x, int y) {
 
 }
 
-olc::Pixel CpuSimulator::getFlagColor(CPU::FLAGS flag) {
+olc::Pixel CPUDebugger::getFlagColor(CPU::FLAGS flag) {
     return nes.cpu.getFlag(flag)? olc::GREEN : olc::RED;
 }
 
-void CpuSimulator::drawCode(int x, int y, int nLines) {
+void CPUDebugger::drawCode(int x, int y, int nLines) {
     int startY = y;
     int endY = (nLines - 1) * 10 + y;
 
@@ -152,3 +154,15 @@ void CpuSimulator::drawCode(int x, int y, int nLines) {
         }
     }
 }
+
+
+///**
+// * Not work for now, because we must plugin cartridge.
+// * May be sometimes later I can figure out how to do this.
+// */
+//int main() {
+//    CpuSimulator simulator;
+//    simulator.Construct(680, 480, 2, 2);
+//    simulator.Start();
+//    return 0;
+//}

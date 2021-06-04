@@ -2,15 +2,16 @@
 // Created by huhua on 2021/5/26.
 //
 
-#ifndef NES_CPU_SIMULATOR_H
-#define NES_CPU_SIMULATOR_H
+#ifndef NES_CPU_DEBUGGER_H
+#define NES_CPU_DEBUGGER_H
 
 
-#include "olcPixelGameEngine.h"
-#include "./bus.h"
+#define OLC_PGE_APPLICATION
+#include "../src/olcPixelGameEngine.h"
+#include "../src/bus.h"
 #include <map>
 
-class CpuSimulator: public olc::PixelGameEngine {
+class CPUDebugger: public olc::PixelGameEngine {
 private:
     Bus nes;
     std::map<uint16_t, std::string> mapAsm;
@@ -32,4 +33,4 @@ public:
 };
 
 
-#endif //NES_CPU_SIMULATOR_H
+#endif //NES_CPU_DEBUGGER_H

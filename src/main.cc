@@ -3,13 +3,8 @@
 //
 
 #include <iostream>
-#define OLC_PGE_APPLICATION
-#include "./cpu_simulator.h"
 
 int main() {
-    CpuSimulator simulator;
-    simulator.Construct(680, 480, 2, 2);
-    simulator.Start();
-//    std::cin.get();
+    std::cout << "this is a main" << std::endl;
     return 0;
 }

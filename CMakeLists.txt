@@ -2,6 +2,19 @@ cmake_minimum_required(VERSION 3.12)
 
 project(nes)
 
-FILE(GLOB_RECURSE SRC *.h *.cc)
+# copy the assets
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
-add_executable(nes ${SRC} src/ppu.cc src/ppu.h src/cartridge.cc src/cartridge.h src/mapper.cc src/mapper.h src/mapper_000.cc src/mapper_000.h)
+FILE(GLOB_RECURSE NES_SRC *.h *.cc)
+
+# we need the full path.
+#list(FILTER NES_SRC EXCLUDE REGEX ".*cpu_debugger.(cc|h)$")
+#add_executable(nes ${NES_SRC})
+
+
+#FILE(GLOB_RECURSE NES_DEBUGGER_SRC *.h *.cc)
+#message(${NES_DEBUGGER_SRC})
+#list(FILTER NES_DEBUGGER_SRC EXCLUDE REGEX ".*/main.cc$")
+#add_executable(nes_debugger ${NES_DEBUGGER_SRC})
+#
+add_subdirectory(demos)
