@@ -6,6 +6,7 @@
 #include "bus.h"
 #include <exception>
 #include <stdexcept>
+#include <iostream>
 
 CPU::CPU() {
     using a = CPU;
@@ -844,7 +845,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     auto hex = [](uint32_t n, uint8_t d) {
         std::string s(d, '0');
         for (int i = d - 1; i >= 0; i--, n >>= 4) {
-            s[i] = "0123456789ABCDEF"[n & 0xcF];
+            s[i] = "0123456789ABCDEF"[n & 0xF];
         }
         return s;
     };
@@ -861,10 +862,10 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
 
     // 有可能overflow啊。
     while (addr <= end) {
-        auto op = read8();
-        std::string sInst = "$" + hex(addr, 4) + ":";
-        uint8_t value, lo;
         auto line_addr = addr;
+        auto op = read8();
+        std::string sInst = "$" + hex(line_addr, 4) + ": ";
+        uint8_t value, lo;
 
         auto inst = lookup[op];
 
@@ -897,7 +898,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
             sInst += "($" + hex(read16(), 4) + ") {IND}";
         } else if (inst.addrmode == &CPU::REL) {
             value = read8();
-            sInst += "($" + hex(value, 2) + "[$ " + hex(addr + value, 4)  + "] {REL}";
+            sInst += "$" + hex(value, 2) + " [$" + hex(addr + value, 4)  + "] {REL}";
         } else {
             throw std::runtime_error("There's some mode we forget");
         }
@@ -906,4 +907,8 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     }
 
     return rst;
+}
+
+bool CPU::complete() {
+    return this->cycles == 0;
 }
