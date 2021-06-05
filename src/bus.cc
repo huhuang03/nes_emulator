@@ -27,7 +27,7 @@ void Bus::cpuWrite(uint16_t addr, uint8_t data) {
 }
 
 uint8_t Bus::cpuRead(uint16_t addr, bool readOnly) {
-    uint8_t data;
+    uint8_t data = 0;
     if (cart->cpuRead(addr, data)) {
 
     } else if (addr <= 0x1fff) {   // ram
@@ -43,7 +43,21 @@ void Bus::reset() {
     cpu.clock();
 }
 
+/**
+ * plugin cartridge and connect ppu
+ */
 void Bus::insertCartridge(const std::shared_ptr<Cartridge> &cartridge) {
     this->cart = cartridge;
     ppu.connectCartridge(cartridge);
+}
+
+void Bus::clock() {
+    ppu.clock();
+
+    if (nSystemClockCounter % 3 == 0) {
+        // cpu is slower than ppu.
+        cpu.clock();
+    }
+
+    nSystemClockCounter++;
 }

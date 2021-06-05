@@ -16,10 +16,9 @@ class Bus {
 private:
     // 2kb
     std::array<uint8_t, 0x800> cpuRam;
-    PPU ppu;
     std::shared_ptr<Cartridge> cart;
 
-    // A count of how many clocks have passed.
+    // so system clock is my clock， also the ppu clock
     uint32_t nSystemClockCounter = 0;
 
 public:
@@ -29,6 +28,7 @@ public:
 public:
     // Devices
     CPU cpu;
+    PPU ppu;
 
     uint8_t cpuRead(uint16_t addr, bool readOnly = false);
     void cpuWrite(uint16_t addr, uint8_t data);
