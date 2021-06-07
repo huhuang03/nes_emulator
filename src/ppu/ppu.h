@@ -11,6 +11,7 @@
 #include "cartridge.h"
 
 #include "./olcPixelGameEngine.h"
+#include "palette.h"
 
 // model: 2C02
 /**
@@ -58,10 +59,7 @@ public:
     void ppuWrite(uint16_t addr, uint8_t data);
 
 private:
-    // 0x0 - 0x1fff. the pattern memory
-    // split to 2 pattern table
-    // one pattern is 4096 and consist of 128 x 128 pixel.
-    // a pixel is 2 bit color.
+    Palette palette;
 
     // A Tile's value is combined by two 8 x 8 bit table. And those two table is follow in physic
     uint8_t tblPattern[2][4096];    // 8kb
@@ -79,22 +77,15 @@ private:
     std::shared_ptr<Cartridge> cart;
 
 private:
-    // pal look like color table.
-    // | olc::Pixel - Represents a 32-Bit RGBA colour                                 |
-    // it's ppu's color table.
-    // why there are 64 'different' color??
-    olc::Pixel palScreen[0x40];
     // | olc::Sprite - An image represented by a 2D array of olc::Pixel               |
     olc::Sprite sprScreen = olc::Sprite(256, 240);
     olc::Sprite sprNameTable[2] = {olc::Sprite(256, 240), olc::Sprite(256, 240)};
     olc::Sprite sprPatternTable[2] = {olc::Sprite(PIXEL_SIZE, PIXEL_SIZE)
                                       , olc::Sprite(PIXEL_SIZE, PIXEL_SIZE)};
 
-private:
-    // Helper method
-    olc::Pixel getPixelInPalette(int value, int which);
-
 public:
+    // Helper method
+    olc::Pixel getColorInPalette(int palette, int index);
     // Debugging Utilities
     olc::Sprite& GetScreen();
     olc::Sprite& GetNameTable(uint8_t which);
@@ -108,6 +99,8 @@ public:
 private:
     int16_t scanline = 0;
     uint16_t cycle = 0;
+    olc::Pixel white = olc::Pixel(236, 238, 236);
+    olc::Pixel black = olc::Pixel(0, 0, 0);
 
 public:
     // Interface

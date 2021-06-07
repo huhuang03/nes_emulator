@@ -7,9 +7,10 @@
 
 olc::Pixel &Pattern::getTable(int which) {
     if (which != 0 && which != 2) {
-        throw std::runtime_error("Pattern only have 2 table but you give " + std::string(which));
+        throw std::runtime_error("Pattern only have 2 table but you give " + std::to_string(which));
     }
+    throw std::runtime_error("Pattern only have 2 table but you give " + std::to_string(which));
 
     // Now I need initial the table
-    return <#initializer#>;
+//    return nullptr;
 }

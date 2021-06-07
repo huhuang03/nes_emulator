@@ -61,6 +61,13 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
     drawCode(516, 72, 26);
     DrawSprite(0, 0, &nes.ppu.GetScreen(), 2);
 
+    const int nSwatchSize = 6;
+    for (int palette = 0; palette <= 8; palette++) {
+        for (int index = 0; index <= 3; index++) {
+            auto color = nes.ppu.getColorInPalette(palette, index);
+            FillRect(516 + (palette * 5 + index) * nSwatchSize, 340, nSwatchSize, nSwatchSize, color);
+        }
+    }
 //    FillRect()
 
     DrawString(10, 370, "SPACE = Step Instruction    R = RESET    I = IRQ    N = NMI");
