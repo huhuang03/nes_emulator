@@ -6,39 +6,11 @@
 #include "cartridge.h"
 #include <stdexcept>
 #include <iostream>
-#include <SDKDDKVer.h>
-#include <Windows.h>
-//#include <unistd>
 
 uint32_t Cartridge::UNIT_CHR = 8 * 1024;
 uint32_t Cartridge::UNIT_PRG = 16 * 1024;
 
-//#ifdef WINDOWS
-#include <direct.h>
-#define GetCurrentDir _getcwd
-//#else
-//#include <unistd.h>
-//#define GetCurrentDir getcwd
-//#endif
-
-std::string get_current_dir() {
-    char buff[FILENAME_MAX]; //create string buffer to hold path
-    GetCurrentDir( buff, FILENAME_MAX );
-    std::string current_working_dir(buff);
-    return current_working_dir;
-}
-
 Cartridge::Cartridge(const std::string &sFileName) {
-    std::cout << get_current_dir() << std::endl;
-//    TCHAR pwd[MAX_PATH];
-//    GetCurrentDirectory(MAX_PATH,pwd);
-//    std::cout << pwd << std::endl;
-//    std::string cwd = _getcwd();
-//    std::filesystem::current_path();
-//    char * cwd;
-//    cwd = (char*) malloc( FILENAME_MAX * sizeof(char) );
-//    getcwd(cwd, FILENAME_MAX);
-
     // http://wiki.nesdev.com/w/index.php/INES
     struct Header {
         // Constant $4E $45 $53 $1A ("NES" followed by MS-DOS end-of-file)

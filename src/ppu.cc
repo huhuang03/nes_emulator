@@ -4,6 +4,11 @@
 
 #include "ppu.h"
 
+uint32_t PPU::TILE_SIZE = 16;
+uint32_t PPU::PIXEL_SIZE_PER_TILE = 8;
+uint32_t PPU::PIXEL_SIZE = TILE_SIZE * PIXEL_SIZE_PER_TILE;
+uint32_t PPU::BYTE_SIZE_PRE_TILE = 8 * 2;
+
 uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
     uint8_t rst = 0x00;
     switch (addr) {
@@ -76,10 +81,6 @@ olc::Sprite &PPU::GetScreen() {
 
 olc::Sprite &PPU::GetNameTable(uint8_t which) {
     return sprNameTable[which];
-}
-
-olc::Sprite &PPU::GetPatternTable(uint8_t which) {
-    return sprPatternTable[which];
 }
 
 void PPU::clock() {
@@ -169,4 +170,28 @@ PPU::PPU() {
     palScreen[0x3D] = olc::Pixel(160, 162, 160);
     palScreen[0x3E] = olc::Pixel(0, 0, 0);
     palScreen[0x3F] = olc::Pixel(0, 0, 0);
+}
+
+olc::Sprite &PPU::GetPatternTable(uint8_t which, uint8_t whichPalette) {
+    // How to loop set the pixel?
+
+    // a pattern table has 128 * 128 pixels
+    for (int tileY = 0; tileY < TILE_SIZE; tileY++) {
+        for (int tileX = 0; tileX < TILE_SIZE; tileX++) {
+            // Ok One tile
+            uint32_t bytesPerTable = 4 * 1024;
+            uint32_t bytesBase = bytesPerTable * which + (tileY * TILE_SIZE + tileX)  * BYTE_SIZE_PRE_TILE;
+
+            // Now we have located the tile.
+            // A tile is 8 * 8 pixel. which 16 * 8 bytes.
+
+            // ok, now calculate the tile
+            for (int y = 0; y < 8; y++) {
+                for (int x = 0; x < 8; x++) {
+
+                }
+            }
+        }
+    }
+    return sprPatternTable[which];
 }
