@@ -3,6 +3,8 @@ file(GLOB_RECURSE LIB_SRC "../src/*.cc" "../src/*.h")
 
 list(FILTER LIB_SRC EXCLUDE REGEX ".*/main.cc$")
 
+list(APPEND LIB_SRC "./base_app.cc" "./base_app.h")
+
 add_executable(cpu_debugger cpu_debugger.cc cpu_debugger.h ${LIB_SRC})
 add_executable(cpu_simulator cpu_simulator.cc cpu_simulator.h ${LIB_SRC})
 # not work??
