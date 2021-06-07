@@ -39,8 +39,9 @@ uint8_t Bus::cpuRead(uint16_t addr, bool readOnly) {
 }
 
 void Bus::reset() {
+    cart.reset();
+    cpu.reset();
     nSystemClockCounter = 0;
-    cpu.clock();
 }
 
 /**
