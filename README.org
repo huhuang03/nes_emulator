@@ -1,5 +1,9 @@
 This is a [[https://www.youtube.com/watch?v=nViZg02IMQo&list=PLrOv9FMX8xJHqMvSGB_9G9nZZ_4IgteYf][practice project]].
 
+以后来看吧，从Part #3开始看。目前我是看不懂了。
+
+Stop at `Part #4`, because I can't understand now.
+
 * How to build
 This is a stand cmake project without library. So just build like the simple cmake project.
 

@@ -13,8 +13,10 @@ uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
     uint8_t rst = 0x00;
     switch (addr) {
         case 0x0000:    // Control
+            rst = control.reg;
             break;
         case 0x0001:    // Mask
+            rst = mask.reg;
             break;
         case 0x0002:    // Status
             break;
@@ -32,11 +34,19 @@ uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
     return rst;
 }
 
+/**
+ * Cpu Write is strange. because it's seems like that cpu write
+ * to some it's self. address.
+ * @param addr
+ * @param data
+ */
 void PPU::cpuWrite(uint16_t addr, uint8_t data) {
     switch (addr) {
         case 0x0000:    // Control
+            control.reg = data;
             break;
         case 0x0001:    // Mask
+            mask.reg = data;
             break;
         case 0x0002:    // Status
             break;
@@ -194,4 +204,8 @@ olc::Sprite &PPU::GetPatternTable(uint8_t which, uint8_t whichPalette) {
         }
     }
     return sprPatternTable[which];
+}
+
+olc::Pixel PPU::getPixelInPalette(int value, int which) {
+    return palScreen[ppuRead(0x3F00 + (value << 2) + which)];
 }

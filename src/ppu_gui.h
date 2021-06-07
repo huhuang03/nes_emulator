@@ -5,7 +5,7 @@
 #ifndef NES_PPU_GUI_H
 #define NES_PPU_GUI_H
 
-#include "ppu.h"
+#include "ppu/ppu.h"
 
 /**
  * Yes, this display the ppu

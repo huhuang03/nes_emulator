@@ -18,7 +18,7 @@ public:
     CPU();
     ~CPU();
 
-    bool complete();
+    bool complete() const;
 
 public:
     enum FLAGS
@@ -92,7 +92,7 @@ public:
     uint8_t read(uint16_t addr);
     void write(uint16_t addr, uint8_t data);
 
-    uint8_t getFlag(FLAGS f);
+    uint8_t getFlag(FLAGS f) const;
     void setFlag(FLAGS f, bool v);
 
     /**
@@ -113,7 +113,8 @@ private:
 
     std::vector<INSTRUCTION> lookup;
 
-    // helper function
+// helper functions
+private:
     uint8_t readPc();
 
     /**
@@ -140,6 +141,9 @@ private:
     uint8_t pop();
     uint16_t pop16();
 
+    /**
+     * common login for compare inst
+     */
     void compare(uint8_t target);
 
     uint8_t branchWithCondition(bool (*)(CPU *cpu));

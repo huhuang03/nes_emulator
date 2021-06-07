@@ -61,6 +61,8 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
     drawCode(516, 72, 26);
     DrawSprite(0, 0, &nes.ppu.GetScreen(), 2);
 
+//    FillRect()
+
     DrawString(10, 370, "SPACE = Step Instruction    R = RESET    I = IRQ    N = NMI");
     return true;
 }

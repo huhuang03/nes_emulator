@@ -812,7 +812,7 @@ uint16_t CPU::pop16() {
     return pop() << 8 | pop();
 }
 
-uint8_t CPU::getFlag(FLAGS f) {
+uint8_t CPU::getFlag(FLAGS f) const {
     return ((status & f) > 0)? 1: 0;
 }
 
@@ -909,6 +909,6 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     return rst;
 }
 
-bool CPU::complete() {
+bool CPU::complete() const {
     return this->cycles == 0;
 }

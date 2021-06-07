@@ -7,6 +7,9 @@
 
 #include <cstdint>
 
+/**
+ * Yes, a mapper can take care of bus read and write cpu, ppu.
+ */
 class Mapper {
 public:
     Mapper(uint8_t prgBanks, uint8_t chrBanks);
