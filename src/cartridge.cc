@@ -6,6 +6,7 @@
 #include "cartridge.h"
 #include <stdexcept>
 #include <iostream>
+#include <cassert>
 
 uint32_t Cartridge::UNIT_CHR = 8 * 1024;
 uint32_t Cartridge::UNIT_PRG = 16 * 1024;
@@ -39,8 +40,14 @@ Cartridge::Cartridge(const std::string &sFileName) {
         nMapperID = (header.mapper1 >> 4) | (header.mapper1 >> 4 << 4);
 
         // ok now we read our prg and chr data
-        uint32_t prg_data_size = header.prg_rom_chunks * UNIT_PRG;
-        uint32_t chr_data_size = header.chr_rom_chunks * UNIT_CHR;
+        nPRGBanks = header.prg_rom_chunks;
+        nCHRBanks = header.chr_rom_chunks;
+
+        assert(nPRGBanks >= 1);
+        assert(nCHRBanks >= 1);
+
+        uint32_t prg_data_size = nPRGBanks * UNIT_PRG;
+        uint32_t chr_data_size = nCHRBanks * UNIT_CHR;
 
         vPRGMemory.resize(prg_data_size);
         ifs.read(reinterpret_cast<char *>(vPRGMemory.data()), prg_data_size);
@@ -65,6 +72,7 @@ Cartridge::Cartridge(const std::string &sFileName) {
 
 bool Cartridge::cpuRead(uint16_t addr, uint8_t &data) {
     uint32_t mapped_addr = 0;
+    // 为什么一直call？
     if (pMapper->cpuMapRead(addr, mapped_addr)) {
         data = vPRGMemory[mapped_addr];
         return true;
@@ -87,4 +95,10 @@ bool Cartridge::ppuRead(uint16_t addr, uint8_t &data) {
 
 bool Cartridge::ppuWrite(uint16_t addr, uint8_t data) {
     return false;
+}
+
+void Cartridge::reset() {
+    if (this->pMapper != nullptr) {
+
+    }
 }

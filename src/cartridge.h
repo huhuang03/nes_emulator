@@ -20,7 +20,9 @@ private:
     static uint32_t UNIT_CHR;
 
 private:
+    // look like the cpu memory
     std::vector<uint8_t> vPRGMemory;
+    // look like the ppu memory
     std::vector<uint8_t> vCHRMemory;
 
     uint8_t nMapperID = 0;
@@ -31,6 +33,8 @@ private:
 
 public:
     explicit Cartridge(const std::string& sFileName);
+
+    void reset();
 
 public:
     bool cpuRead(uint16_t addr, uint8_t& data);

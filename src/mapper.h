@@ -11,6 +11,12 @@
  * Yes, a mapper can take care of bus read and write cpu, ppu.
  */
 class Mapper {
+protected:
+    uint16_t addr_cpu_min = 0x8000;
+    uint16_t addr_cpu_max = 0xFFFF;
+    uint16_t addr_ppu_min = 0x0000;
+    uint16_t addr_ppu_max = 0x1fff;
+
 public:
     Mapper(uint8_t prgBanks, uint8_t chrBanks);
 
