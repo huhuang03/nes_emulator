@@ -9,7 +9,7 @@ void BaseApp::drawRam(int x, int y, uint16_t nAddr, int nRows, int nColumns) {
     for (int row = 0; row < nRows; row++) {
         std::string sOffsets = "$" + hex(nAddr, 4) + ":";
         for (int col = 0; col < nColumns; col++) {
-            auto hexStr = hex(nes.cpuRead(nAddr++, true), 2);
+            auto hexStr = hex(nes.read(nAddr++, true), 2);
             sOffsets += " " + hexStr;
         }
         DrawString(nRamX, nRamY, sOffsets);

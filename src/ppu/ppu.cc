@@ -105,11 +105,11 @@ void PPU::clock() {
     cycle++;
 
     // why 341?
-    if (cycle >= 341) {
+    if (cycle >= this->scan_width) {
         cycle = 0;
         scanline++;
 
-        if (scanline >= 261) {
+        if (scanline >= scan_height) {
             // back to begin.
             scanline = -1;
             frame_complete = true;

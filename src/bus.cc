@@ -15,7 +15,7 @@ Bus::~Bus() {
 
 }
 
-void Bus::cpuWrite(uint16_t addr, uint8_t data) {
+void Bus::write(uint16_t addr, uint8_t data) {
     // why cartridge write all the addr??
     if (cart->cpuWrite(addr, data)) {
 
@@ -26,7 +26,7 @@ void Bus::cpuWrite(uint16_t addr, uint8_t data) {
     }
 }
 
-uint8_t Bus::cpuRead(uint16_t addr, bool readOnly) {
+uint8_t Bus::read(uint16_t addr, bool readOnly) {
     uint8_t data = 0;
     if (cart->cpuRead(addr, data)) {
 
@@ -40,7 +40,7 @@ uint8_t Bus::cpuRead(uint16_t addr, bool readOnly) {
 
 void Bus::reset() {
     // 这里不应该reset的
-    cart.reset();
+    cart->reset();
     cpu.reset();
     nSystemClockCounter = 0;
 }

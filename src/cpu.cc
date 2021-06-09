@@ -715,11 +715,11 @@ void CPU::nmi() {
 }
 
 uint8_t CPU::read(uint16_t addr) {
-    return bus->cpuRead(addr, false);
+    return bus->read(addr, false);
 }
 
 void CPU::write(uint16_t addr, uint8_t data) {
-    bus->cpuWrite(addr, data);
+    bus->write(addr, data);
 }
 
 void CPU::clock() {
@@ -769,9 +769,10 @@ inline void CPU::updateFlagN(uint8_t data) {
     setFlag(N, data & 0x80);
 }
 
-uint8_t CPU::branchWithCondition(bool (*condition)(CPU *cpu)) {
+uint8_t CPU::branchWithCondition(bool (*condition)(CPU *)) {
     if (condition(this)) {
         cycles++;
+        // 感觉这里addr_rel是负的也可以啊
         addr_abs = pc + addr_rel;
         if ((addr_abs & 0xFF00) != (pc & 0xFF00)) {
             cycles++;
@@ -851,7 +852,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
     };
 
     auto read8 = [&addr, this]() {
-        return bus->cpuRead(addr++, true);
+        return bus->read(addr++, true);
     };
 
     auto read16 = [&read8]() {
@@ -898,7 +899,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
             sInst += "($" + hex(read16(), 4) + ") {IND}";
         } else if (inst.addrmode == &CPU::REL) {
             value = read8();
-            sInst += "$" + hex(value, 2) + " [$" + hex(addr + value, 4)  + "] {REL}";
+            sInst += "$" + hex(value, 2) + " [$" + hex(addr + (int8_t)value, 4)  + "] {REL}";
         } else {
             throw std::runtime_error("There's some mode we forget");
         }

@@ -34,6 +34,11 @@
 class PPU {
     // Now, let's remove some magic
 private:
+    const uint16_t scan_width = 341;
+    const uint16_t scan_height = 261;
+    const uint16_t width = 256;
+    const uint16_t height = 240;
+
     /**
      * How many TILES_NUM * TILES_NUM in one pattern table.
      */
@@ -78,8 +83,8 @@ private:
 
 private:
     // | olc::Sprite - An image represented by a 2D array of olc::Pixel               |
-    olc::Sprite sprScreen = olc::Sprite(256, 240);
-    olc::Sprite sprNameTable[2] = {olc::Sprite(256, 240), olc::Sprite(256, 240)};
+    olc::Sprite sprScreen = olc::Sprite(width, height);
+    olc::Sprite sprNameTable[2] = {olc::Sprite(width, height), olc::Sprite(width, height)};
     olc::Sprite sprPatternTable[2] = {olc::Sprite(PIXEL_SIZE, PIXEL_SIZE)
                                       , olc::Sprite(PIXEL_SIZE, PIXEL_SIZE)};
 

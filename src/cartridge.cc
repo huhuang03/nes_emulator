@@ -72,7 +72,6 @@ Cartridge::Cartridge(const std::string &sFileName) {
 
 bool Cartridge::cpuRead(uint16_t addr, uint8_t &data) {
     uint32_t mapped_addr = 0;
-    // 为什么一直call？
     if (pMapper->cpuMapRead(addr, mapped_addr)) {
         data = vPRGMemory[mapped_addr];
         return true;

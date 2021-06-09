@@ -30,8 +30,8 @@ public:
     CPU cpu;
     PPU ppu;
 
-    uint8_t cpuRead(uint16_t addr, bool readOnly = false);
-    void cpuWrite(uint16_t addr, uint8_t data);
+    uint8_t read(uint16_t addr, bool readOnly = false);
+    void write(uint16_t addr, uint8_t data);
 
 public: // System Interface
     void insertCartridge(const std::shared_ptr<Cartridge>& cartridge);

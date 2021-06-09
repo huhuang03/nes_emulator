@@ -27,22 +27,22 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
         }
     } else {
         if (GetKey(olc::Key::C).bPressed) {
-            do {
-                nes.cpu.clock();
-            } while (!nes.cpu.complete());
-
-            // why the tutorial do this clock again? I can't figure out now.
-            do {
+            // dry out previous
+            while (!nes.cpu.complete()) {
                 nes.clock();
-            } while (nes.cpu.complete());
+            }
+
+            // go next
+            while (nes.cpu.complete()) {
+                nes.clock();
+            }
         }
 
         if (GetKey(olc::Key::F).bPressed) {
             do {
-                nes.cpu.clock();
+                nes.clock();
             } while (!nes.ppu.frame_complete);
 
-            // why the tutorial do this clock again? I can't figure out now.
             do {
                 nes.clock();
             } while (!nes.cpu.complete());
