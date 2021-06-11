@@ -66,9 +66,6 @@ public:
 private:
     Palette palette;
 
-    // A Tile's value is combined by two 8 x 8 bit table. And those two table is follow in physic
-    uint8_t tblPattern[2][4096];    // 8kb
-
     // Devices connected to it's bus
     uint8_t tblName[2][1024];   // 2kb
 
@@ -120,6 +117,7 @@ private:
             uint8_t unused: 5;
             uint8_t sprite_overflow: 1;
             uint8_t sprite_zero_hit: 1;
+            // In the video, It seems says that when scan the below outrange line, means vertical_balck
             uint8_t vertical_blank: 1;
         };
         uint8_t reg;
@@ -157,6 +155,7 @@ private:
     uint8_t address_latch = 0x00;
     uint8_t ppu_data_buffer = 0x00;
     uint16_t ppu_address = 0x0000;
+    void forward_ppu_address();
 };
 
 

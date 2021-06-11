@@ -10,7 +10,20 @@
 #include "olcPixelGameEngine.h"
 
 /**
- * Can split to 0x0 - 0xfff, 0x1000 - 0x1fff two table
+ * What is a pattern?
+ * A pattern is some address lined to ppu bus.
+ *
+ * And it's address in ppu is 0x0 - 0x1fff
+ *
+ * In virtual it's spite to too table [0x0 - 0xfff], [0x1000 - 0x1fff]
+ *
+ * A table is consist of 16 x 16 tile.
+ * A tile is consist of 8 x 8 pixel
+ * A pixel need two bit. But the tile is something like this:
+ * First the first bit of 8 pixel, Then the second bit of 8
+ * . . . . . . . .                 . . . . . . . .
+ * Followed by the other 7 line of pixel
+ *
  */
 class Pattern {
 private:

@@ -7,6 +7,9 @@
 
 #include "../olcPixelGameEngine.h"
 
+/**
+ * So a palette is a `device` in the ppu bus.
+ */
 class Palette {
 public:
     Palette();
@@ -23,7 +26,7 @@ private:
 
 public:
     uint8_t read(uint16_t addr);
-    uint8_t write(uint16_t addr, uint8_t data);
+    void write(uint16_t addr, uint8_t data);
     olc::Pixel getColor(int palette, int index);
 };
 

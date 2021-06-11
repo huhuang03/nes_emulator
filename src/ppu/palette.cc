@@ -86,6 +86,7 @@ uint8_t Palette::read(uint16_t addr) {
     return data[addr - addr_min];
 }
 
-uint8_t Palette::write(uint16_t addr, uint8_t data) {
-    throw std::runtime_error("Not support write to pallete");
+// not write?? strange.
+void Palette::write(uint16_t addr, uint8_t data) {
+    this->data[addr - addr_min] = data;
 }

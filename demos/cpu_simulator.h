@@ -20,6 +20,7 @@ public:
 private:
     bool bEmulationRun = false;
     float fResidualTime = 0.0f;
+    int nSelectPalette = 0;
 
     void drawPalette(int y);
 

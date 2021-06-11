@@ -10,15 +10,22 @@ uint32_t PPU::PIXEL_SIZE = TILE_SIZE * PIXEL_SIZE_PER_TILE;
 uint32_t PPU::BYTE_SIZE_PRE_TILE = 8 * 2;
 
 uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
-    uint8_t rst = 0x00;
+    uint8_t data = 0x00;
     switch (addr) {
         case 0x0000:    // Control
-            rst = control.reg;
+            data = control.reg;
             break;
         case 0x0001:    // Mask
-            rst = mask.reg;
+            data = mask.reg;
             break;
         case 0x0002:    // Status
+            // still some strange thing
+            // yes, it's amazing.
+            // call read 2002 -> bus.read(2002) -> ppu.cpuRead(0x2)
+            status.vertical_blank = 1;
+            data = (status.reg & 0xE0) | (ppu_data_buffer & 0x1f);
+            status.vertical_blank = 0;
+            address_latch = 0;
             break;
         case 0x0003:    // OAM Address
             break;
@@ -27,11 +34,19 @@ uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
         case 0x0005:    // Scroll
             break;
         case 0x0006:    // PPU Address
+//            throw std::runtime_error("Should not happen, read the ppu address");
+            std::cout << "why you read ppu address?" << std::endl;
             break;
         case 0x0007:    // PPU Data
+            // delayed one cycle, I dont know why
+            data = ppu_data_buffer;
+            ppu_data_buffer = ppuRead(ppu_address);
+            // palette has no delay
+            if (ppu_address >= palette.addr_min) data = ppu_data_buffer;
+            forward_ppu_address();
             break;
     }
-    return rst;
+    return data;
 }
 
 /**
@@ -57,8 +72,19 @@ void PPU::cpuWrite(uint16_t addr, uint8_t data) {
         case 0x0005:    // Scroll
             break;
         case 0x0006:    // PPU Address
+            if (address_latch == 0) {
+                // First set the high byte(6)
+                ppu_address = (data & 0x003F) << 8;
+                address_latch = 1;
+            } else {
+                // Then se the low byte()
+                ppu_address = (ppu_address & 0xff00) | data;
+                address_latch = 0;
+            }
             break;
         case 0x0007:    // PPU Data
+            ppuWrite(ppu_address, data);
+            forward_ppu_address();
             break;
     }
 }
@@ -82,7 +108,7 @@ void PPU::ppuWrite(uint16_t addr, uint8_t data) {
     } else {
         addr &= 0x3fff;
         if (addr >= palette.addr_min && addr <= palette.addr_max) {
-            data = palette.write(addr, data);
+            palette.write(addr, data);
         }
     }
 }
@@ -146,4 +172,9 @@ olc::Sprite &PPU::GetPatternTable(uint8_t which, uint8_t whichPalette) {
 
 olc::Pixel PPU::getColorInPalette(int which_palette, int index) {
     return palette.getColor(which_palette, index);
+}
+
+void PPU::forward_ppu_address() {
+    // I don't know why 32 now.
+    ppu_address += (control.increment_mode ? 32: 1);
 }

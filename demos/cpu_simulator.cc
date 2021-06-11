@@ -17,6 +17,11 @@ bool CPUSimulator::OnUserCreate() {
 bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
     Clear(olc::DARK_BLUE);
 
+    if (GetKey(olc::Key::P).bReleased) {
+        (++nSelectPalette) &= 0x7;
+    }
+
+
     if (bEmulationRun) {
         if (fResidualTime > 0.0f) {
             fResidualTime -= fElapsedTime;
@@ -75,11 +80,15 @@ CPUSimulator::CPUSimulator() {
 void CPUSimulator::drawPalette(int y) {
     const int nSwatchSize = 6;
     for (int palette = 0; palette < 8; palette++) {
-        for (int index = 0; index < 3; index++) {
+        for (int index = 0; index < 4; index++) {
             auto color = nes.ppu.getColorInPalette(palette, index);
+            // now our goal is the right palette.
             FillRect(516 + (palette * 5 + index) * nSwatchSize, y, nSwatchSize, nSwatchSize, color);
         }
     }
+    // draw the selection
+    // wht 4??
+    DrawRect(516 + nSelectPalette * (nSwatchSize * 5) - 1, 339, (nSwatchSize * 4), nSwatchSize, olc::WHITE);
 }
 
 
