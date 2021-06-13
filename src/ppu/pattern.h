@@ -9,6 +9,8 @@
 #include <cstdint>
 #include "olcPixelGameEngine.h"
 
+class PPU;
+
 /**
  * What is a pattern?
  * A pattern is some address lined to ppu bus.
@@ -27,6 +29,12 @@
  */
 class Pattern {
 private:
+    // this is all single table value.
+    const uint8_t width = 128;
+    const uint8_t height = 128;
+    const uint8_t num_tile = 16;
+    const uint8_t num_pixel_in_tile = 8;
+
     uint32_t min = 0x0;
     uint32_t max = 0x1fff;
 
@@ -36,8 +44,18 @@ private:
     uint32_t table2_min = 0x1000;
     uint32_t table2_max = 0x1fff;
 
+    // mostly as the bg?
+    olc::Sprite sprite1 = olc::Sprite(100, 100);
+    olc::Sprite sprite2 = olc::Sprite(100, 100);
 
-    olc::Pixel& getTable(int which);
+    olc::Sprite* sprites[2] = {&sprite1, &sprite2};
+    uint8_t data[0x1fff] = {0};
+    PPU *ppu = nullptr;
+
+public:
+    explicit Pattern() = default;;
+    void setPPU(PPU *ppu);
+    olc::Sprite& getSprite(int which, int palette);
 };
 
 

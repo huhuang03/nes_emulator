@@ -66,9 +66,11 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
     drawCode(516, 72, 26);
     drawPalette(340);
 
-    DrawSprite(0, 0, &nes.ppu.GetScreen(), 2);
+    DrawSprite(516, 348, &nes.ppu.getPattern(0, nSelectPalette));
+    DrawSprite(648, 348, &nes.ppu.getPattern(1, nSelectPalette));
 
-    DrawString(10, 370, "SPACE = Step Instruction    R = RESET    I = IRQ    N = NMI");
+
+    DrawString(10, 370, "SPACE = Switch MOde    P = Palette    R = Reset");
     return true;
 }
 

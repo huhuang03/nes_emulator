@@ -12,6 +12,7 @@
 
 #include "./olcPixelGameEngine.h"
 #include "palette.h"
+#include "pattern.h"
 
 // model: 2C02
 /**
@@ -63,16 +64,20 @@ public:
     uint8_t ppuRead(uint16_t addr, bool readOnly = false);
     void ppuWrite(uint16_t addr, uint8_t data);
 
+public:
+    olc::Sprite& getPattern(int which, int palette);
+
 private:
     Palette palette;
+    Pattern pattern;
 
     // Devices connected to it's bus
-    uint8_t tblName[2][1024];   // 2kb
+    uint8_t tblName[2][1024]{};   // 2kb
 
     // 0x3f00 - 0x3f1d
     // 0x3f00 single entry for the background color?? 8 bit value? 64 color.
     // why the video palette is not continued?
-    uint8_t tblPalette[32];
+    uint8_t tblPalette[32]{};
 
 
     // Yes, we can community with cart.
@@ -111,6 +116,8 @@ public:
     // But what a ppu clock do?
     void clock();
 
+
+
 private:
     union {
         struct {
@@ -121,7 +128,7 @@ private:
             uint8_t vertical_blank: 1;
         };
         uint8_t reg;
-    } status;
+    } status{};
 
     union {
         struct {
@@ -135,7 +142,7 @@ private:
             uint8_t enhance_blue: 1;
         };
         uint8_t reg;
-    } mask;
+    } mask{};
 
     union {
         struct {
@@ -149,7 +156,7 @@ private:
             uint8_t enable_nmi: 1;
         };
         uint8_t reg;
-    } control;
+    } control{};
 
     // Address write to low byte
     uint8_t address_latch = 0x00;

@@ -144,30 +144,7 @@ void PPU::clock() {
 }
 
 PPU::PPU() {
-}
-
-olc::Sprite &PPU::GetPatternTable(uint8_t which, uint8_t whichPalette) {
-    // How to loop set the pixel?
-
-    // a pattern table has 128 * 128 pixels
-    for (int tileY = 0; tileY < TILE_SIZE; tileY++) {
-        for (int tileX = 0; tileX < TILE_SIZE; tileX++) {
-            // Ok One tile
-            uint32_t bytesPerTable = 4 * 1024;
-            uint32_t bytesBase = bytesPerTable * which + (tileY * TILE_SIZE + tileX)  * BYTE_SIZE_PRE_TILE;
-
-            // Now we have located the tile.
-            // A tile is 8 * 8 pixel. which 16 * 8 bytes.
-
-            // ok, now calculate the tile
-            for (int y = 0; y < 8; y++) {
-                for (int x = 0; x < 8; x++) {
-
-                }
-            }
-        }
-    }
-    return sprPatternTable[which];
+    this->pattern.setPPU(this);
 }
 
 olc::Pixel PPU::getColorInPalette(int which_palette, int index) {
@@ -177,4 +154,8 @@ olc::Pixel PPU::getColorInPalette(int which_palette, int index) {
 void PPU::forward_ppu_address() {
     // I don't know why 32 now.
     ppu_address += (control.increment_mode ? 32: 1);
+}
+
+olc::Sprite &PPU::getPattern(int which, int palette) {
+    return this->pattern.getSprite(which, palette);
 }
