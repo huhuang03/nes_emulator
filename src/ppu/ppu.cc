@@ -96,20 +96,20 @@ uint8_t PPU::ppuRead(uint16_t addr, bool readOnly) {
     } else {
         addr &= 0x3fff;
         if (addr >= palette.addr_min && addr <= palette.addr_max) {
-            data = palette.read(addr);
+            data = palette.read(addr, mask.grayscale);
         }
     }
     return data;
 }
 
 void PPU::ppuWrite(uint16_t addr, uint8_t data) {
+    // why mirror??
+    addr &= 0x3fff;
     if (cart->ppuWrite(addr, data)) {
 
+    } else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
+        palette.write(addr, data);
     } else {
-        addr &= 0x3fff;
-        if (addr >= palette.addr_min && addr <= palette.addr_max) {
-            palette.write(addr, data);
-        }
     }
 }
 
@@ -145,10 +145,17 @@ void PPU::clock() {
 
 PPU::PPU() {
     this->pattern.setPPU(this);
+    this->palette.setPPU(this);
 }
 
 olc::Pixel PPU::getColorInPalette(int which_palette, int index) {
-    return palette.getColor(which_palette, index);
+    if (index < 0 || index > 3) {
+        throw std::runtime_error("index range is [" + std::to_string(0) + " - " + std::to_string(3) + "]");
+    }
+    return palette.getColor(ppuRead(palette.addr_min + which_palette * 4 + index));
+////    std::cout << "index: " << std::to_string(index) << std::endl;
+//    return this->palScreen[this->data[palette * 4 + index]];
+//    return palette.getColor(which_palette, index);
 }
 
 void PPU::forward_ppu_address() {

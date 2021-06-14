@@ -88,8 +88,7 @@ void CPUSimulator::drawPalette(int y) {
             FillRect(516 + (palette * 5 + index) * nSwatchSize, y, nSwatchSize, nSwatchSize, color);
         }
     }
-    // draw the selection
-    // wht 4??
+
     DrawRect(516 + nSelectPalette * (nSwatchSize * 5) - 1, 339, (nSwatchSize * 4), nSwatchSize, olc::WHITE);
 }
 

@@ -97,10 +97,6 @@ public:
     olc::Sprite& GetScreen();
     olc::Sprite& GetNameTable(uint8_t which);
 
-    /**
-     * We need calculate the Sprite in time for which pattern and which pallette
-     */
-    olc::Sprite& GetPatternTable(uint8_t which, uint8_t whichPalette);
     bool frame_complete = false;
 
 private:
@@ -115,7 +111,6 @@ public:
     // So ppu has it's own clock
     // But what a ppu clock do?
     void clock();
-
 
 
 private:

@@ -49,7 +49,6 @@ private:
     olc::Sprite sprite2 = olc::Sprite(width, height);
 
     olc::Sprite* sprites[2] = {&sprite1, &sprite2};
-//    uint8_t data[0x1fff] = {0};
     PPU *ppu = nullptr;
 
 public:

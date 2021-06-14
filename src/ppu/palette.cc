@@ -3,15 +3,11 @@
 //
 
 #include "palette.h"
+#include "ppu.h"
 #include <string>
 
-olc::Pixel Palette::getColor(int palette, int index) {
-    if (index < 0 || index > 3) {
-        throw std::runtime_error("index range is [" + std::to_string(0) + " - " + std::to_string(3) + "]");
-    }
-//    std::cout << "index: " << std::to_string(index) << std::endl;
-    return this->palScreen[this->data[palette * 4 + index]];
-}
+//olc::Pixel Palette::getColor(int palette, int index) {
+//}
 
 Palette::Palette() {
     palScreen[0x00] = olc::Pixel(84, 84, 84);
@@ -83,11 +79,32 @@ Palette::Palette() {
     palScreen[0x3F] = olc::Pixel(0, 0, 0);
 }
 
-uint8_t Palette::read(uint16_t addr) {
-    return data[addr - addr_min];
+uint8_t Palette::read(uint16_t addr, bool grayscale) {
+    addr &= 0x001F;
+    if (addr == 0x0010) addr = 0x0000;
+    if (addr == 0x0014) addr = 0x0004;
+    if (addr == 0x0018) addr = 0x0008;
+    if (addr == 0x001C) addr = 0x000C;
+
+    // why have this scale?
+    return data[addr] & (grayscale? 0x30: 0x3F);
 }
 
-// not write?? strange.
-void Palette::write(uint16_t addr, uint8_t data) {
-    this->data[addr - addr_min] = data;
+void Palette::write(uint16_t addr, uint8_t pData) {
+    addr &= 0x1f;
+
+    // this mirror I cant understand.
+    if (addr == 0x0010) addr = 0x0000;
+    if (addr == 0x0014) addr = 0x0004;
+    if (addr == 0x0018) addr = 0x0008;
+    if (addr == 0x001C) addr = 0x000C;
+    this->data[addr] = pData;
+}
+
+void Palette::setPPU(PPU *pPpu) {
+    this->ppu = pPpu;
+}
+
+olc::Pixel Palette::getColor(int index) {
+    return this->palScreen[index];
 }
