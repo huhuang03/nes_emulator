@@ -9,6 +9,7 @@ olc::Pixel Palette::getColor(int palette, int index) {
     if (index < 0 || index > 3) {
         throw std::runtime_error("index range is [" + std::to_string(0) + " - " + std::to_string(3) + "]");
     }
+//    std::cout << "index: " << std::to_string(index) << std::endl;
     return this->palScreen[this->data[palette * 4 + index]];
 }
 

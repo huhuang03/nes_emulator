@@ -45,11 +45,11 @@ private:
     uint32_t table2_max = 0x1fff;
 
     // mostly as the bg?
-    olc::Sprite sprite1 = olc::Sprite(100, 100);
-    olc::Sprite sprite2 = olc::Sprite(100, 100);
+    olc::Sprite sprite1 = olc::Sprite(width, height);
+    olc::Sprite sprite2 = olc::Sprite(width, height);
 
     olc::Sprite* sprites[2] = {&sprite1, &sprite2};
-    uint8_t data[0x1fff] = {0};
+//    uint8_t data[0x1fff] = {0};
     PPU *ppu = nullptr;
 
 public:

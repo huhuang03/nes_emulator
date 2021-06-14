@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <string>
 #include "mapper_000.h"
 
 bool Mapper000::cpuMapRead(uint16_t addr, uint32_t &mapped_addr) {

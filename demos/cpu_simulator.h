@@ -6,12 +6,12 @@
 #define NES_CPU_SIMULATOR_H
 
 
-#define OLC_PGE_APPLICATION
-#include "../src/olcPixelGameEngine.h"
 #include "../src/bus.h"
 #include "cartridge.h"
 #include "./base_app.h"
 #include <map>
+#define OLC_PGE_APPLICATION
+#include "../src/olcPixelGameEngine.h"
 
 class CPUSimulator: public BaseApp {
 public:
