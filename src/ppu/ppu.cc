@@ -126,6 +126,14 @@ olc::Sprite &PPU::GetNameTable(uint8_t which) {
 }
 
 void PPU::clock() {
+    // we are no output of the height
+    // why judge the cycle, I don't now for now.
+    // and what is the cycle, I don't know either.
+    if (scanline == height + 1 && cycle == 1) {
+        // what is the vertical_blank
+        status.vertical_blank = 1;
+    }
+
     sprScreen.SetPixel(cycle - 1, scanline, rand() % 2? black : white);
 
     cycle++;
@@ -152,10 +160,10 @@ olc::Pixel PPU::getColorInPalette(int which_palette, int index) {
     if (index < 0 || index > 3) {
         throw std::runtime_error("index range is [" + std::to_string(0) + " - " + std::to_string(3) + "]");
     }
+//    if (index > 0) {
+//        std::cout << "index: " << std::to_string(index) << std::endl;
+//    }
     return palette.getColor(ppuRead(palette.addr_min + which_palette * 4 + index));
-////    std::cout << "index: " << std::to_string(index) << std::endl;
-//    return this->palScreen[this->data[palette * 4 + index]];
-//    return palette.getColor(which_palette, index);
 }
 
 void PPU::forward_ppu_address() {
@@ -163,6 +171,6 @@ void PPU::forward_ppu_address() {
     ppu_address += (control.increment_mode ? 32: 1);
 }
 
-olc::Sprite &PPU::getPattern(int which, int palette) {
-    return this->pattern.getSprite(which, palette);
+olc::Sprite &PPU::getPattern(int which, int nPalette) {
+    return this->pattern.getSprite(which, nPalette);
 }

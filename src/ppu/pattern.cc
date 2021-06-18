@@ -17,9 +17,12 @@ olc::Sprite &Pattern::getSprite(int which, int palette) {
                 uint8_t h_byte = ppu->ppuRead(b_index + b_start + 8);
 
                 for (int c_tp = 0; c_tp < 8; c_tp++) {
-                    uint8_t l_val = l_byte >> (8 - c_tp);
-                    uint8_t h_val = h_byte >> (8 - c_tp);
-                    uint8_t p_index = (l_val | h_val << 1) & 0b11;
+                    uint8_t l_val = l_byte >> (7 - c_tp);
+                    uint8_t h_val = h_byte >> (7 - c_tp);
+                    // strange is plus.
+
+                    uint8_t p_index = (l_val + h_val) & 0b11;
+//                    uint8_t p_index = (l_val | h_val << 1) & 0b11;
 
                     int row = r_t * 8 + r_tp;
                     int col = c_t * 8 + c_tp;

@@ -65,7 +65,7 @@ public:
     void ppuWrite(uint16_t addr, uint8_t data);
 
 public:
-    olc::Sprite& getPattern(int which, int palette);
+    olc::Sprite& getPattern(int which, int nPalette);
 
 private:
     Palette palette;
@@ -119,7 +119,7 @@ private:
             uint8_t unused: 5;
             uint8_t sprite_overflow: 1;
             uint8_t sprite_zero_hit: 1;
-            // In the video, It seems says that when scan the below outrange line, means vertical_balck
+            // In the video, It seems says that when scan the out of the height, means vertical_blank
             uint8_t vertical_blank: 1;
         };
         uint8_t reg;
