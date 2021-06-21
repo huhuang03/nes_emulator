@@ -17,7 +17,7 @@
 
 // model: 2C02
 /**
- * We use pixel game engine to draw the game.
+ * We use pixel game engine to drawNo the game.
  *
  * 0x0000 - 0x1FFF Pattern Memory "CHR ROM"
  *
@@ -40,6 +40,7 @@ private:
     const uint16_t scan_height = 261;
     const uint16_t width = 256;
     const uint16_t height = 240;
+    friend class Bridge;
 
 public:
     PPU();
@@ -97,6 +98,47 @@ public:
     // So ppu has it's own clock
     // But what a ppu clock do?
     void clock();
+
+private:
+    // The state reg.
+    union {
+        struct {
+            uint8_t grayscale: 1;
+            uint8_t render_background_left: 1;
+            uint8_t render_sprites_left: 1;
+            uint8_t render_background: 1;
+            uint8_t render_sprites: 1;
+            uint8_t enhance_red: 1;
+            uint8_t enhance_green: 1;
+            uint8_t enhance_blue: 1;
+        };
+        uint8_t reg;
+    } mask{};
+
+    union {
+        struct {
+            uint8_t unused: 5;
+            uint8_t sprite_overflow: 1;
+            uint8_t sprite_zero_hit: 1;
+            // In the video, It seems says that when scan the out of the height, means vertical_blank
+            uint8_t vertical_blank: 1;
+        };
+        uint8_t reg;
+    } status{};
+
+    union {
+        struct {
+            uint8_t nametable_x: 1;
+            uint8_t nametable_y: 1;
+            uint8_t increment_mode: 1;
+            uint8_t pattern_sprite: 1;
+            uint8_t pattern_background: 1;
+            uint8_t sprite_size: 1;
+            uint8_t slave_mode: 1;
+            uint8_t enable_nmi: 1;
+        };
+        uint8_t reg;
+    } control{};
 
 
 private:

@@ -26,6 +26,8 @@ class PPU;
  * . . . . . . . .                 . . . . . . . .
  * Followed by the other 7 line of pixel
  *
+ * 我其实到现在也没有搞清楚pattern是什么啊。
+ *
  */
 class Pattern {
 private:

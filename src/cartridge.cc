@@ -38,6 +38,7 @@ Cartridge::Cartridge(const std::string &sFileName) {
         }
 
         nMapperID = (header.mapper1 >> 4) | (header.mapper1 >> 4 << 4);
+        mirror = (header.mapper1 & 0x01) ? VERTICAL : HORIZONTAL;
 
         // ok now we read our prg and chr data
         nPRGBanks = header.prg_rom_chunks;
@@ -100,4 +101,8 @@ void Cartridge::reset() {
     if (this->pMapper != nullptr) {
 
     }
+}
+
+bool Cartridge::ImageValid() {
+    return bImageValid;
 }

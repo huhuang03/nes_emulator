@@ -26,7 +26,7 @@ uint8_t PPU::ppuRead(uint16_t addr, bool readOnly) {
     } else {
         addr &= 0x3fff;
         if (addr >= palette.addr_min && addr <= palette.addr_max) {
-            data = palette.read(addr, this->bridge.mask.grayscale);
+            data = palette.read(addr, mask.grayscale);
         }
     }
     return data;
@@ -57,7 +57,7 @@ olc::Sprite &PPU::GetNameTable(uint8_t which) {
 
 void PPU::clock() {
     if (scanline == -1 && cycle == 1) {
-        this->bridge.status.vertical_blank = 0;
+        status.vertical_blank = 0;
     }
 
     // we are no output of the height
@@ -65,8 +65,8 @@ void PPU::clock() {
     // and what is the cycle, I don't know either.
     if (scanline == height + 1 && cycle == 1) {
         // what is the vertical_blank
-        this->bridge.status.vertical_blank = 1;
-        if (this->bridge.control.enable_nmi) {
+        status.vertical_blank = 1;
+        if (control.enable_nmi) {
             nmi = true;
         }
     }

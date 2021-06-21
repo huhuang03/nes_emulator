@@ -81,24 +81,14 @@ Palette::Palette() {
 
 uint8_t Palette::read(uint16_t addr, bool grayscale) {
     addr &= 0x001F;
-    if (addr == 0x0010) addr = 0x0000;
-    if (addr == 0x0014) addr = 0x0004;
-    if (addr == 0x0018) addr = 0x0008;
-    if (addr == 0x001C) addr = 0x000C;
-
     // why have this scale?
-    return data[addr] & (grayscale? 0x30: 0x3F);
+    return data[mirror(addr)] & (grayscale? 0x30: 0x3F);
 }
 
 void Palette::write(uint16_t addr, uint8_t pData) {
-    addr &= 0x1f;
+    addr &= 0x001f;
 
-    // this mirror I cant understand.
-    if (addr == 0x0010) addr = 0x0000;
-    if (addr == 0x0014) addr = 0x0004;
-    if (addr == 0x0018) addr = 0x0008;
-    if (addr == 0x001C) addr = 0x000C;
-    this->data[addr] = pData;
+    this->data[mirror(addr)] = pData;
 }
 
 void Palette::setPPU(PPU *pPpu) {
@@ -107,4 +97,12 @@ void Palette::setPPU(PPU *pPpu) {
 
 olc::Pixel Palette::getColor(int index) {
     return this->palScreen[index];
+}
+
+uint16_t Palette::mirror(uint16_t addr) {
+    if (addr == 0x0010) addr = 0x0000;
+    if (addr == 0x0014) addr = 0x0004;
+    if (addr == 0x0018) addr = 0x0008;
+    if (addr == 0x001C) addr = 0x000C;
+    return addr;
 }

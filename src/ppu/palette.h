@@ -10,7 +10,11 @@
 class PPU;
 
 /**
- * So a palette is a `device` in the ppu bus.
+ * https://wiki.nesdev.com/w/index.php/PPU_palettes
+ *
+ * the unit is one byte.
+ * so there are 0x20 byte which mens 32 value.
+ *
  */
 class Palette {
 public:
@@ -22,18 +26,15 @@ public:
     uint8_t data[0x20] = {0};
 
 private:
-    // pal look like color table.
-    // | olc::Pixel - Represents a 32-Bit RGBA colour                                 |
-    // it's ppu's color table.
-    // why there are 64 'different' color??
+    // A 6-bit value in the palette memory area corresponds to one of 64 outputs
     olc::Pixel palScreen[0x40];
     PPU *ppu = nullptr;
+    uint16_t mirror(uint16_t addr);
 
 public:
     void setPPU(PPU *pPpu);
     uint8_t read(uint16_t addr, bool grayscale);
     void write(uint16_t addr, uint8_t data);
-//    olc::Pixel getColor(int palette, int index);
     olc::Pixel getColor(int index);
 };
 

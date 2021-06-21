@@ -25,6 +25,7 @@ private:
     // look like the ppu memory
     std::vector<uint8_t> vCHRMemory;
 
+    bool bImageValid = false;
     uint8_t nMapperID = 0;
     uint8_t nPRGBanks = 0;
     uint8_t nCHRBanks = 0;
@@ -35,6 +36,17 @@ public:
     explicit Cartridge(const std::string& sFileName);
 
     void reset();
+
+public:
+    bool ImageValid();
+
+    enum MIRROR
+    {
+        HORIZONTAL,
+        VERTICAL,
+        ONESCREEN_LO,
+        ONESCREEN_HI,
+    } mirror = HORIZONTAL;
 
 public:
     bool cpuRead(uint16_t addr, uint8_t& data);
