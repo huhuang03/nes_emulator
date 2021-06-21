@@ -5,7 +5,7 @@
 #include "cpu_simulator.h"
 
 bool CPUSimulator::OnUserCreate() {
-    cate = std::make_shared<Cartridge>("../assets/nestest.nes");
+    cate = std::make_shared<Cartridge>("../assets/smb.nes");
     nes.insertCartridge(cate);
 
     mapAsm = nes.cpu.disassemble(0x0000, 0xFFFF);

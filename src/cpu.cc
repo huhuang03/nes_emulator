@@ -888,7 +888,7 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
         } else if (inst.addrmode == &CPU::IZX) {
             sInst += "$" + hex(read8(), 2) + ", X) {IZX}";
         } else if (inst.addrmode == &CPU::IZY) {
-            sInst += "$" + hex(read8(), 2) + "), Y {IZY}";
+            sInst += "($" + hex(read8(), 2) + "), Y {IZY}";
         } else if (inst.addrmode == &CPU::ABS) {
             sInst += "$" + hex(read16(), 4) + " {ABS}";
         } else if (inst.addrmode == &CPU::ABX) {

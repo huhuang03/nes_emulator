@@ -62,7 +62,7 @@ Cartridge::Cartridge(const std::string &sFileName) {
                 throw std::exception("For now, we only support mapper id 0");
         }
     } else {
-        std::cout << "Can't read from cartridge " + sFileName << std::endl;
+        std::cout << "open file failed " + sFileName << std::endl;
         throw std::invalid_argument("Can't read from cartridge " + sFileName);
     }
 

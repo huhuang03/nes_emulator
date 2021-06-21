@@ -4,10 +4,6 @@
 
 #include "ppu.h"
 
-uint32_t PPU::TILE_SIZE = 16;
-uint32_t PPU::PIXEL_SIZE_PER_TILE = 8;
-uint32_t PPU::PIXEL_SIZE = TILE_SIZE * PIXEL_SIZE_PER_TILE;
-uint32_t PPU::BYTE_SIZE_PRE_TILE = 8 * 2;
 
 uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
     uint8_t data = 0x00;
@@ -19,10 +15,8 @@ uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
             data = mask.reg;
             break;
         case 0x0002:    // Status
-            // still some strange thing
-            // yes, it's amazing.
-            // call read 2002 -> bus.read(2002) -> ppu.cpuRead(0x2)
-            status.vertical_blank = 1;
+            // why you can do this??
+            // status.vertical_blank = 1;
             data = (status.reg & 0xE0) | (ppu_data_buffer & 0x1f);
             status.vertical_blank = 0;
             address_latch = 0;
@@ -126,12 +120,19 @@ olc::Sprite &PPU::GetNameTable(uint8_t which) {
 }
 
 void PPU::clock() {
+    if (scanline == -1 && cycle == 1) {
+        status.vertical_blank = 0;
+    }
+
     // we are no output of the height
     // why judge the cycle, I don't now for now.
     // and what is the cycle, I don't know either.
     if (scanline == height + 1 && cycle == 1) {
         // what is the vertical_blank
         status.vertical_blank = 1;
+        if (control.enable_nmi) {
+            nmi = true;
+        }
     }
 
     sprScreen.SetPixel(cycle - 1, scanline, rand() % 2? black : white);
