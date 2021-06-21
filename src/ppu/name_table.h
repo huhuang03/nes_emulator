@@ -10,6 +10,8 @@ class NameTable {
 private:
     const int size_bytes = 1 * 1024;
     const int num_entries = 32;
+    const int addr_min = 0x2000;
+    const int addr_max = 0x3eff;
 };
 
 
