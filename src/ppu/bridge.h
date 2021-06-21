@@ -14,21 +14,11 @@ class PPU;
  */
 class Bridge {
 public:
+    void setPPU(PPU *ppu);
     uint8_t read(uint16_t addr, bool readOnly = false);
     void write(uint16_t addr, uint8_t data);
 
-private:
-    union {
-        struct {
-            uint8_t unused: 5;
-            uint8_t sprite_overflow: 1;
-            uint8_t sprite_zero_hit: 1;
-            // In the video, It seems says that when scan the out of the height, means vertical_blank
-            uint8_t vertical_blank: 1;
-        };
-        uint8_t reg;
-    } status{};
-
+public:
     union {
         struct {
             uint8_t grayscale: 1;
@@ -45,6 +35,17 @@ private:
 
     union {
         struct {
+            uint8_t unused: 5;
+            uint8_t sprite_overflow: 1;
+            uint8_t sprite_zero_hit: 1;
+            // In the video, It seems says that when scan the out of the height, means vertical_blank
+            uint8_t vertical_blank: 1;
+        };
+        uint8_t reg;
+    } status{};
+
+    union {
+        struct {
             uint8_t nametable_x: 1;
             uint8_t nametable_y: 1;
             uint8_t increment_mode: 1;
@@ -57,9 +58,17 @@ private:
         uint8_t reg;
     } control{};
 
+
+private:
+    PPU *ppu;
+
+    uint16_t ppu_address = 0x0000;
+
     // Address write to low byte
     uint8_t address_latch = 0x00;
     uint8_t ppu_data_buffer = 0x00;
+
+    void forward_ppu_address();
 };
 
 

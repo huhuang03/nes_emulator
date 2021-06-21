@@ -56,10 +56,11 @@ public:
 
 public:
     olc::Sprite& getPattern(int which, int nPalette);
+    Palette palette;
 
 private:
-    Palette palette;
     Pattern pattern;
+    Bridge bridge;
 
     // 0x3f00 - 0x3f1d
     // 0x3f00 single entry for the background color?? 8 bit value? 64 color.
@@ -99,10 +100,8 @@ public:
 
 
 private:
-    uint16_t ppu_address = 0x0000;
     // I don't know what's the nmi
     bool nmi = false;
-    void forward_ppu_address();
 };
 
 

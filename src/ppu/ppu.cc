@@ -6,41 +6,7 @@
 
 
 uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
-    uint8_t data = 0x00;
-    switch (addr) {
-        case 0x0000:    // Control
-            data = control.reg;
-            break;
-        case 0x0001:    // Mask
-            data = mask.reg;
-            break;
-        case 0x0002:    // Status
-            // why you can do this??
-            // status.vertical_blank = 1;
-            data = (status.reg & 0xE0) | (ppu_data_buffer & 0x1f);
-            status.vertical_blank = 0;
-            address_latch = 0;
-            break;
-        case 0x0003:    // OAM Address
-            break;
-        case 0x0004:    // OAM Data
-            break;
-        case 0x0005:    // Scroll
-            break;
-        case 0x0006:    // PPU Address
-//            throw std::runtime_error("Should not happen, read the ppu address");
-            std::cout << "why you read ppu address?" << std::endl;
-            break;
-        case 0x0007:    // PPU Data
-            // delayed one cycle, I dont know why
-            data = ppu_data_buffer;
-            ppu_data_buffer = ppuRead(ppu_address);
-            // palette has no delay
-            if (ppu_address >= palette.addr_min) data = ppu_data_buffer;
-            forward_ppu_address();
-            break;
-    }
-    return data;
+    return this->bridge.read(addr, readOnly);
 }
 
 /**
@@ -50,37 +16,7 @@ uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
  * @param data
  */
 void PPU::cpuWrite(uint16_t addr, uint8_t data) {
-    switch (addr) {
-        case 0x0000:    // Control
-            control.reg = data;
-            break;
-        case 0x0001:    // Mask
-            mask.reg = data;
-            break;
-        case 0x0002:    // Status
-            break;
-        case 0x0003:    // OAM Address
-            break;
-        case 0x0004:    // OAM Data
-            break;
-        case 0x0005:    // Scroll
-            break;
-        case 0x0006:    // PPU Address
-            if (address_latch == 0) {
-                // First set the high byte(6)
-                ppu_address = (data & 0x003F) << 8;
-                address_latch = 1;
-            } else {
-                // Then se the low byte()
-                ppu_address = (ppu_address & 0xff00) | data;
-                address_latch = 0;
-            }
-            break;
-        case 0x0007:    // PPU Data
-            ppuWrite(ppu_address, data);
-            forward_ppu_address();
-            break;
-    }
+    this->bridge.write(addr, data);
 }
 
 uint8_t PPU::ppuRead(uint16_t addr, bool readOnly) {
@@ -90,7 +26,7 @@ uint8_t PPU::ppuRead(uint16_t addr, bool readOnly) {
     } else {
         addr &= 0x3fff;
         if (addr >= palette.addr_min && addr <= palette.addr_max) {
-            data = palette.read(addr, mask.grayscale);
+            data = palette.read(addr, this->bridge.mask.grayscale);
         }
     }
     return data;
@@ -121,7 +57,7 @@ olc::Sprite &PPU::GetNameTable(uint8_t which) {
 
 void PPU::clock() {
     if (scanline == -1 && cycle == 1) {
-        status.vertical_blank = 0;
+        this->bridge.status.vertical_blank = 0;
     }
 
     // we are no output of the height
@@ -129,8 +65,8 @@ void PPU::clock() {
     // and what is the cycle, I don't know either.
     if (scanline == height + 1 && cycle == 1) {
         // what is the vertical_blank
-        status.vertical_blank = 1;
-        if (control.enable_nmi) {
+        this->bridge.status.vertical_blank = 1;
+        if (this->bridge.control.enable_nmi) {
             nmi = true;
         }
     }
@@ -165,11 +101,6 @@ olc::Pixel PPU::getColorInPalette(int which_palette, int index) {
 //        std::cout << "index: " << std::to_string(index) << std::endl;
 //    }
     return palette.getColor(ppuRead(palette.addr_min + which_palette * 4 + index));
-}
-
-void PPU::forward_ppu_address() {
-    // I don't know why 32 now.
-    ppu_address += (control.increment_mode ? 32: 1);
 }
 
 olc::Sprite &PPU::getPattern(int which, int nPalette) {
