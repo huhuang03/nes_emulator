@@ -14,6 +14,7 @@
 #include "palette.h"
 #include "pattern.h"
 #include "./bridge.h"
+#include "./name_tables.h"
 
 // model: 2C02
 /**
@@ -41,6 +42,7 @@ private:
     const uint16_t width = 256;
     const uint16_t height = 240;
     friend class Bridge;
+    friend class NameTables;
 
 public:
     PPU();
@@ -62,12 +64,7 @@ public:
 private:
     Pattern pattern;
     Bridge bridge;
-
-    // 0x3f00 - 0x3f1d
-    // 0x3f00 single entry for the background color?? 8 bit value? 64 color.
-    // why the video palette is not continued?
-    uint8_t tblPalette[32]{};
-
+    NameTables nameTables;
 
     // Yes, we can community with cart.
     std::shared_ptr<Cartridge> cart;
@@ -75,7 +72,6 @@ private:
 private:
     // | olc::Sprite - An image represented by a 2D array of olc::Pixel               |
     olc::Sprite sprScreen = olc::Sprite(width, height);
-    olc::Sprite sprNameTable[2] = {olc::Sprite(width, height), olc::Sprite(width, height)};
 
 public:
     // Helper method

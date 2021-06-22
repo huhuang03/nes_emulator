@@ -106,3 +106,11 @@ void Cartridge::reset() {
 bool Cartridge::ImageValid() {
     return bImageValid;
 }
+
+bool Cartridge::isVertical() {
+    return mirror == MIRROR::VERTICAL;
+}
+
+bool Cartridge::isHorizontal() {
+    return mirror == MIRROR::HORIZONTAL;
+}

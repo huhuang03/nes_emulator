@@ -11,3 +11,8 @@ std::string hex(uint32_t n, uint8_t d) {
     }
     return s;
 }
+
+template<typename T>
+bool in(T val, T min, T max) {
+    return val >= min && val <= max;
+}

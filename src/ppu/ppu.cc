@@ -23,12 +23,12 @@ uint8_t PPU::ppuRead(uint16_t addr, bool readOnly) {
     uint8_t data = 0x00;
     if (cart->ppuRead(addr, data)) {
 
-    } else {
-        addr &= 0x3fff;
-        if (addr >= palette.addr_min && addr <= palette.addr_max) {
-            data = palette.read(addr, mask.grayscale);
-        }
+    } else if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
+        data = nameTables.read(addr);
+    } else if (addr >= palette.addr_min && addr <= palette.addr_max) {
+        data = palette.read(addr, mask.grayscale);
     }
+    // should throw here?
     return data;
 }
 
@@ -37,10 +37,14 @@ void PPU::ppuWrite(uint16_t addr, uint8_t data) {
     addr &= 0x3fff;
     if (cart->ppuWrite(addr, data)) {
 
-    } else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
-        palette.write(addr, data);
-    } else {
     }
+    else if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
+        nameTables.write(addr, data);
+    }
+    else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
+        palette.write(addr, data);
+    }
+    // should throw here?
 }
 
 void PPU::connectCartridge(const std::shared_ptr<Cartridge> &cartridge) {
@@ -49,10 +53,6 @@ void PPU::connectCartridge(const std::shared_ptr<Cartridge> &cartridge) {
 
 olc::Sprite &PPU::GetScreen() {
     return sprScreen;
-}
-
-olc::Sprite &PPU::GetNameTable(uint8_t which) {
-    return sprNameTable[which];
 }
 
 void PPU::clock() {
@@ -91,6 +91,7 @@ void PPU::clock() {
 PPU::PPU() {
     this->pattern.setPPU(this);
     this->palette.setPPU(this);
+    this->nameTables.setPPU(this);
 }
 
 olc::Pixel PPU::getColorInPalette(int which_palette, int index) {

@@ -37,6 +37,10 @@ public:
 
     void reset();
 
+    bool isVertical();
+
+    bool isHorizontal();
+
 public:
     bool ImageValid();
 

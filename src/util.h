@@ -8,4 +8,7 @@
 #include <cstdint>
 
 std::string hex(uint32_t n, uint8_t d);
+
+template <typename T>
+bool in(T val, T min, T max);
 #endif //NES_UTIL_H
