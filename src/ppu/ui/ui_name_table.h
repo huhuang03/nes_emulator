@@ -9,9 +9,13 @@
 #include "../name_table.h"
 
 
+/**
+ * UINameTable is private. So how can yo public?
+ */
 class UINameTable {
 public:
     explicit UINameTable(NameTable *nameTable);
+
 private:
     NameTable *nameTable;
 
