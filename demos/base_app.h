@@ -24,6 +24,8 @@ protected:
 
     void drawCode(int x, int y, int nLines);
 
+    void drawCode(uint16_t pc, int x, int y, int nLines);
+
 
 };
 

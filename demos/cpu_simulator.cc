@@ -5,7 +5,8 @@
 #include "cpu_simulator.h"
 
 bool CPUSimulator::OnUserCreate() {
-    cate = std::make_shared<Cartridge>("../assets/smb.nes");
+    uiPPU = new UIPPU(&nes.ppu);
+    cate = std::make_shared<Cartridge>("../assets/nestest.nes");
     nes.insertCartridge(cate);
 
     mapAsm = nes.cpu.disassemble(0x0000, 0xFFFF);
@@ -63,14 +64,18 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
         bEmulationRun = !bEmulationRun;
 
     drawCpu(516, 2);
-    drawCode(516, 72, 26);
+//    drawCode(516, 72, 26);
+    drawCode(0xc037, 516, 72, 26);
     drawPalette(340);
 
     DrawSprite(516, 348, &nes.ppu.getPattern(0, nSelectPalette));
     DrawSprite(648, 348, &nes.ppu.getPattern(1, nSelectPalette));
 
 
-    DrawString(10, 370, "SPACE = Switch MOde    P = Palette    R = Reset");
+    // DrawSprite(0, 0, &nes.ppu.GetScreen(), 2);
+    uiPPU->drawNameTable1No(this, 0, 0);
+
+//    DrawString(10, 370, "SPACE = Switch MOde    P = Palette    R = Reset");
     return true;
 }
 

@@ -88,6 +88,7 @@ public:
     uint8_t cycles = 0;
 
 public:
+    void print(uint16_t ip, int before, int after);
     void connectBus(Bus *n) { bus = n; };
     uint8_t read(uint16_t addr);
     void write(uint16_t addr, uint8_t data);

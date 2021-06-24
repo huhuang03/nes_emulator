@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
+#include "./util.h"
 
 uint32_t Cartridge::UNIT_CHR = 8 * 1024;
 uint32_t Cartridge::UNIT_PRG = 16 * 1024;
@@ -37,7 +38,7 @@ Cartridge::Cartridge(const std::string &sFileName) {
             ifs.seekg(512, std::ios_base::cur);
         }
 
-        nMapperID = (header.mapper1 >> 4) | (header.mapper1 >> 4 << 4);
+        nMapperID = (header.mapper1 >> 4) | (header.mapper2 >> 4 << 4);
         mirror = (header.mapper1 & 0x01) ? VERTICAL : HORIZONTAL;
 
         // ok now we read our prg and chr data
@@ -52,6 +53,8 @@ Cartridge::Cartridge(const std::string &sFileName) {
 
         vPRGMemory.resize(prg_data_size);
         ifs.read(reinterpret_cast<char *>(vPRGMemory.data()), prg_data_size);
+
+        // 谁这里出问题了吗
         vCHRMemory.resize(chr_data_size);
         ifs.read(reinterpret_cast<char *>(vCHRMemory.data()), chr_data_size);
 
@@ -75,6 +78,7 @@ bool Cartridge::cpuRead(uint16_t addr, uint8_t &data) {
     uint32_t mapped_addr = 0;
     if (pMapper->cpuMapRead(addr, mapped_addr)) {
         data = vPRGMemory[mapped_addr];
+//        std::cout << "cpuRead from " << hex(addr, 4) << ", val: " << data << std::endl;
         return true;
     }
     return false;

@@ -43,6 +43,7 @@ private:
     const uint16_t height = 240;
     friend class Bridge;
     friend class NameTables;
+    friend class UIPPU;
 
 public:
     PPU();

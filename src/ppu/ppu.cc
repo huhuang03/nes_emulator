@@ -3,6 +3,7 @@
 //
 
 #include "ppu.h"
+#include "../util.h"
 
 
 uint8_t PPU::cpuRead(uint16_t addr, bool readOnly) {
@@ -32,13 +33,19 @@ uint8_t PPU::ppuRead(uint16_t addr, bool readOnly) {
     return data;
 }
 
+static int count = 0;
+
 void PPU::ppuWrite(uint16_t addr, uint8_t data) {
     // why mirror??
-    addr &= 0x3fff;
-    if (cart->ppuWrite(addr, data)) {
-
-    }
-    else if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
+    if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
+        // The data is not right.
+        // but the data is not right
+        if (addr == nameTables.addr_min) {
+            // pc is 49207 0xc037
+            std::cout << "write to nameTables: " << hex(addr, 4) << ", val: " << hex(data, 1) << std::endl;
+            // fuck, I want know the cpu ip
+//            std::cout << "pc: " <<  << std::endl;
+        }
         nameTables.write(addr, data);
     }
     else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
@@ -89,6 +96,7 @@ void PPU::clock() {
 }
 
 PPU::PPU() {
+    this->bridge.setPPU(this);
     this->pattern.setPPU(this);
     this->palette.setPPU(this);
     this->nameTables.setPPU(this);

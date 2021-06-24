@@ -4,7 +4,6 @@
 
 #include "cpu.h"
 #include "bus.h"
-#include <exception>
 #include <stdexcept>
 #include <iostream>
 
@@ -912,4 +911,8 @@ std::map<uint16_t, std::string> CPU::disassemble(uint16_t start, uint16_t end) {
 
 bool CPU::complete() const {
     return this->cycles == 0;
+}
+
+void CPU::print(uint16_t ip, int before, int after) {
+    auto inst_map = disassemble(0x0, 0xFFFF);
 }

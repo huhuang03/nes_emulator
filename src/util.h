@@ -9,6 +9,9 @@
 
 std::string hex(uint32_t n, uint8_t d);
 
+// you are not work??
 template <typename T>
-bool in(T val, T min, T max);
+bool in(T val, T min, T max) {
+    return val >= min && val <= max;
+}
 #endif //NES_UTIL_H

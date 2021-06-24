@@ -8,7 +8,7 @@
 void UINameTable::drawNo(olc::PixelGameEngine *engine, int x, int y) {
     for (int r = 0; r < nameTable->height; ++r) {
         for (int c = 0; c < nameTable->width; ++c) {
-            engine->DrawString(x * 16, y * 16, hex(this->nameTable->data[r * nameTable->width + c], 2));
+            engine->DrawString(c * 16, r * 16, hex(this->nameTable->data[r * nameTable->width + c], 2));
         }
     }
 }

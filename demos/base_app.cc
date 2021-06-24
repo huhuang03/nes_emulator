@@ -37,11 +37,27 @@ void BaseApp::drawCpu(int x, int y) {
 }
 
 void BaseApp::drawCode(int x, int y, int nLines) {
+    this->drawCode(nes.cpu.pc, x, y, nLines);
+}
+
+std::string BaseApp::hex(uint32_t n, uint8_t d) {
+    std::string s(d, '0');
+    for (int i = d - 1; i >= 0; i--, n >>= 4) {
+        s[i] = "0123456789ABCDEF"[n & 0xF];
+    }
+    return s;
+}
+
+olc::Pixel BaseApp::getFlagColor(CPU::FLAGS flag) {
+    return nes.cpu.getFlag(flag)? olc::GREEN : olc::RED;
+}
+
+void BaseApp::drawCode(uint16_t pc, int x, int y, int nLines) {
     int startY = y;
     int endY = (nLines - 1) * 10 + y;
 
     int centerY = (nLines >> 1) * 10 + y;
-    auto code = mapAsm.find(nes.cpu.pc);
+    auto code = mapAsm.find(pc);
     if (code != mapAsm.end()) {
         DrawString(x, centerY, code->second, olc::CYAN);
 
@@ -73,16 +89,4 @@ void BaseApp::drawCode(int x, int y, int nLines) {
             }
         }
     }
-}
-
-std::string BaseApp::hex(uint32_t n, uint8_t d) {
-    std::string s(d, '0');
-    for (int i = d - 1; i >= 0; i--, n >>= 4) {
-        s[i] = "0123456789ABCDEF"[n & 0xF];
-    }
-    return s;
-}
-
-olc::Pixel BaseApp::getFlagColor(CPU::FLAGS flag) {
-    return nes.cpu.getFlag(flag)? olc::GREEN : olc::RED;
 }
