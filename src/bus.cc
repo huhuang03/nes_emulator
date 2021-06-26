@@ -39,7 +39,6 @@ uint8_t Bus::read(uint16_t addr, bool readOnly) {
 }
 
 void Bus::reset() {
-    // 这里不应该reset的
     cart->reset();
     cpu.reset();
     nSystemClockCounter = 0;
@@ -62,4 +61,16 @@ void Bus::clock() {
     }
 
     nSystemClockCounter++;
+}
+
+// bn
+void Bus::clockCpu() {
+    while (!cpu.complete()) {
+        clock();
+    }
+
+    // go next
+    while (cpu.complete()) {
+        clock();
+    }
 }

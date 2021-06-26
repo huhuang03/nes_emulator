@@ -30,6 +30,8 @@ public:
     CPU cpu;
     PPU ppu;
 
+    void clockCpu();
+
     uint8_t read(uint16_t addr, bool readOnly = false);
     void write(uint16_t addr, uint8_t data);
 

@@ -7,7 +7,6 @@
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
-#include "./util.h"
 
 uint32_t Cartridge::UNIT_CHR = 8 * 1024;
 uint32_t Cartridge::UNIT_PRG = 16 * 1024;
@@ -78,7 +77,6 @@ bool Cartridge::cpuRead(uint16_t addr, uint8_t &data) {
     uint32_t mapped_addr = 0;
     if (pMapper->cpuMapRead(addr, mapped_addr)) {
         data = vPRGMemory[mapped_addr];
-//        std::cout << "cpuRead from " << hex(addr, 4) << ", val: " << data << std::endl;
         return true;
     }
     return false;

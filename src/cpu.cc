@@ -675,6 +675,7 @@ void CPU::reset() {
     sp = 0xFD;
     status = 0x00 | U;
 
+    // the begin address is at 0xfffc
     pc = read16(0xFFFC);
 
     addr_rel = 0x00;

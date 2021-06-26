@@ -10,8 +10,13 @@ bool CPUSimulator::OnUserCreate() {
     nes.insertCartridge(cate);
 
     mapAsm = nes.cpu.disassemble(0x0000, 0xFFFF);
-
     nes.reset();
+
+    // run to 0xc037?
+    while (nes.cpu.pc != 0xc037) {
+        nes.clockCpu();
+    }
+
     return true;
 }
 
@@ -34,14 +39,7 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
     } else {
         if (GetKey(olc::Key::C).bPressed) {
             // dry out previous
-            while (!nes.cpu.complete()) {
-                nes.clock();
-            }
-
-            // go next
-            while (nes.cpu.complete()) {
-                nes.clock();
-            }
+            nes.clockCpu();
         }
 
         if (GetKey(olc::Key::F).bPressed) {
@@ -64,8 +62,8 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
         bEmulationRun = !bEmulationRun;
 
     drawCpu(516, 2);
-//    drawCode(516, 72, 26);
-    drawCode(0xc037, 516, 72, 26);
+    drawCode(516, 72, 26);
+//    drawCode(0xc037, 516, 72, 26);
     drawPalette(340);
 
     DrawSprite(516, 348, &nes.ppu.getPattern(0, nSelectPalette));

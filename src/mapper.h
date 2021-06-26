@@ -12,6 +12,7 @@
  */
 class Mapper {
 protected:
+    // ok, begin from 0x8000 is from cartridge.
     uint16_t addr_cpu_min = 0x8000;
     uint16_t addr_cpu_max = 0xFFFF;
     uint16_t addr_ppu_min = 0x0000;

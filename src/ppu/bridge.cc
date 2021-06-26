@@ -22,14 +22,16 @@ uint8_t Bridge::read(uint16_t addr, bool readOnly) {
     uint8_t data = 0x00;
     switch (addr) {
         case OP_CONTROL:
-            std::cout << "why you read from control" << std::endl;
+//            std::cout << "why you read from control" << std::endl;
             break;
         case OP_MASK:    // Mask
-            std::cout << "why you read from mask" << std::endl;
+//            std::cout << "why you read from mask" << std::endl;
             break;
         case OP_STATUS:    // Status
             // why you can do this??
-            ppu->status.vertical_blank = 1;
+            // not work at all.
+            // why I dont' set this, also passed?
+            // ppu->status.vertical_blank = 1;
             data = (ppu->status.reg & 0xE0) | (ppu_data_buffer & 0x1f);
             ppu->status.vertical_blank = 0;
             address_latch = 0;
@@ -39,10 +41,10 @@ uint8_t Bridge::read(uint16_t addr, bool readOnly) {
         case OP_OAM_DATA:    // ignore for now
             break;
         case OP_SCROLL:    // Scroll
-            std::cout << "why you read from scroll" << std::endl;
+//            std::cout << "why you read from scroll" << std::endl;
             break;
         case OP_ADDR:    // PPU Address
-            std::cout << "why you read ppu address?" << std::endl;
+//            std::cout << "why you read ppu address?" << std::endl;
             break;
         case OP_DATA:    // PPU Data
             // delayed one cycle, I dont know why
@@ -65,6 +67,8 @@ void Bridge::write(uint16_t addr, uint8_t data) {
             ppu->mask.reg = data;
             break;
         case OP_STATUS:
+            // you can't write status?
+            throw std::runtime_error("Actually, you can't write to status.");
             break;
         case OP_OAM_ADDR:
             break;
