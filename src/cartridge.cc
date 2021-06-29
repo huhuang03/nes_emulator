@@ -3,7 +3,7 @@
 //
 
 #include <fstream>
-#include "cartridge.h"
+#include "th_nes/cartridge.h"
 #include <stdexcept>
 #include <iostream>
 #include <cassert>

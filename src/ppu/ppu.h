@@ -8,7 +8,7 @@
 
 #include <cstdint>
 #include <memory>
-#include "../cartridge.h"
+#include "th_nes/cartridge.h"
 
 #include "../olcPixelGameEngine.h"
 #include "palette.h"

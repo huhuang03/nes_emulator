@@ -51,7 +51,7 @@
 
 	Author
 	~~~~~~
-	David Barr, aka javidx9, ©OneLoneCoder 2019
+	David Barr, aka javidx9, ï¿½OneLoneCoder 2019
 */
 
 
@@ -78,7 +78,7 @@ public: // Devices on Main Bus
 	// The Cartridge or "GamePak"
 	std::shared_ptr<Cartridge> cart;
 	// 2KB of RAM
-	uint8_t cpuRam[2048];
+	uint8_t cpuRam[2048] = {0};
 	// Controllers
 	uint8_t controller[2];
 
@@ -99,5 +99,7 @@ public: // System Interface
 	void reset();
 	// Clocks the system - a single whole systme tick
 	void clock();
+
+    void clockCpu();
 };
 

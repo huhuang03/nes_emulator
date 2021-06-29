@@ -7,7 +7,7 @@
 
 
 #include "include/th_nes/bus.h"
-#include "cartridge.h"
+#include "include/th_nes/cartridge.h"
 #include "./base_app.h"
 #include <map>
 #include "ppu/ui/ui_ppu.h"

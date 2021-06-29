@@ -51,7 +51,7 @@
 
 	Author
 	~~~~~~
-	David Barr, aka javidx9, ©OneLoneCoder 2019
+	David Barr, aka javidx9, ï¿½OneLoneCoder 2019
 */
 
 #include "Bus.h"
@@ -176,4 +176,15 @@ void Bus::clock()
 	}
 
 	nSystemClockCounter++;
+}
+
+void Bus::clockCpu() {
+    while (!cpu.complete()) {
+        clock();
+    }
+
+    // go next
+    while (cpu.complete()) {
+        clock();
+    }
 }

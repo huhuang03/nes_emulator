@@ -5,7 +5,7 @@
 #ifndef NES_EMPTY_CARTRIDGE_H
 #define NES_EMPTY_CARTRIDGE_H
 
-#include "./cartridge.h"
+#include "th_nes/cartridge.h"
 
 namespace th {
     class EmptyCartridge : public Cartridge {

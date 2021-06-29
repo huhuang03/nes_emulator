@@ -1,21 +1,68 @@
 //
 // Created by huhua on 2021/6/27.
 //
+#include <Cartridge.h>
 #include <Bus.h>
 
 #include <gtest/gtest.h>
 #include <th_nes/bus.h>
 #include "empty_cartridge.h"
+#include <util.h>
 
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
+typedef std::map<std::uint16_t, std::string> CodeMap;
+
+void printCodeMap(CodeMap& codeMap) {
+    for (auto & it : codeMap) {
+        std::cout << hex(it.first, 4) << ": " << it.second << std::endl;
+    }
+}
+
+void compareCpu(Bus &cpu1, th::Bus &cpu2) {
+    for (uint16_t addr = 0; addr <= 0xFFFF; addr++) {
+        auto data1 = cpu1.cpuRead(addr, false);
+        auto data2 = cpu2.read(addr, false);
+        // why you not error right now.
+        ASSERT_EQ(data1, data2) << " at pc: " << hex(cpu1.cpu.pc, 4) << ", addr: " << addr;
+    }
+    ASSERT_EQ(cpu1.cpu.pc, cpu2.cpu.pc) << " at pc: " << hex(cpu1.cpu.pc, 4);
+    ASSERT_EQ(cpu1.cpu.x, cpu2.cpu.x) << " at pc: " << hex(cpu1.cpu.pc, 4);
+    ASSERT_EQ(cpu1.cpu.y, cpu2.cpu.y) << " at pc: " << hex(cpu1.cpu.pc, 4);
+    ASSERT_EQ(cpu1.cpu.a, cpu2.cpu.a) << " at pc: " << hex(cpu1.cpu.pc, 4);
+}
+
 // 大小写好像不敏感啊。
 
 TEST(CPUTEST, CompareCPU) {
+    std::string nesPath = "../assets/nestest.nes";
     Bus rightBus;
+    rightBus.insertCartridge(std::make_shared<Cartridge>(nesPath));
+    rightBus.reset();
+
+    CodeMap rightAssemble = rightBus.cpu.disassemble(0x0, 0xFFFF);
+
     th::Bus compareBus;
+    compareBus.insertCartridge(std::make_shared<th::Cartridge>(nesPath));
+    compareBus.reset();
+
+    std::map<std::uint16_t, std::string> compareAssemble = rightBus.cpu.disassemble(0x0, 0xFFFF);
+
+    auto it1 = rightAssemble.begin();
+    auto it2 = compareAssemble.begin();
+
+    while (it1 != rightAssemble.end()) {
+        ASSERT_EQ(it1->second, it2->second);
+        it1++;
+        it2++;
+    }
+
+//    do {
+        compareCpu(rightBus, compareBus);
+//    } while (true);
+
 }
 
 TEST(CPUTest, Test1) {

@@ -14,4 +14,5 @@ template <typename T>
 bool in(T val, T min, T max) {
     return val >= min && val <= max;
 }
+
 #endif //NES_UTIL_H
