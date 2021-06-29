@@ -5,7 +5,7 @@
 #ifndef NES_UI_NAME_TABLE_H
 #define NES_UI_NAME_TABLE_H
 
-#include <olcPixelGameEngine.h>
+#include "../../olcPixelGameEngine.h"
 #include "../name_table.h"
 
 

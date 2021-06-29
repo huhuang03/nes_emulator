@@ -7,7 +7,7 @@
 
 
 #include <cstdint>
-#include "olcPixelGameEngine.h"
+#include "../olcPixelGameEngine.h"
 
 class PPU;
 

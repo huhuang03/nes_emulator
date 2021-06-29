@@ -5,7 +5,7 @@
 #ifndef NES_UI_PPU_H
 #define NES_UI_PPU_H
 
-#include <olcPixelGameEngine.h>
+#include "../../olcPixelGameEngine.h"
 #include "../ppu.h"
 #include "./ui_name_table.h"
 

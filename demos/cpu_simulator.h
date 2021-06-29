@@ -10,9 +10,9 @@
 #include "cartridge.h"
 #include "./base_app.h"
 #include <map>
+#include "ppu/ui/ui_ppu.h"
 #define OLC_PGE_APPLICATION
 #include "../src/olcPixelGameEngine.h"
-#include "ppu/ui/ui_ppu.h"
 
 class CPUSimulator: public BaseApp {
 public:

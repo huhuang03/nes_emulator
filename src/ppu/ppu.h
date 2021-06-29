@@ -8,9 +8,9 @@
 
 #include <cstdint>
 #include <memory>
-#include "cartridge.h"
+#include "../cartridge.h"
 
-#include "./olcPixelGameEngine.h"
+#include "../olcPixelGameEngine.h"
 #include "palette.h"
 #include "pattern.h"
 #include "./bridge.h"

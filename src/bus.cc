@@ -3,6 +3,11 @@
 //
 
 #include "bus.h"
+#include "util.h"
+
+/**
+ * Ok, we can hardly create an empty cartridge. So we check the cart.
+ */
 
 Bus::Bus() {
     for (auto &i: cpuRam) {
@@ -22,13 +27,15 @@ void Bus::write(uint16_t addr, uint8_t data) {
     } else if (addr <= 0x1fff) {    // ram
         cpuRam[addr & 0x07ff] = data;
     } else if (addr >= 0x2000 && addr <= 0x3fff) {  // ppu
+        // fuck, how can I debug you??
+        std::cout << "write to ppu, " << hex(addr, 4) << ": " << hex(data, 1) << std::endl;
         ppu.cpuWrite(addr & 0x0007, data);
     }
 }
 
 uint8_t Bus::read(uint16_t addr, bool readOnly) {
     uint8_t data = 0;
-    if (cart->cpuRead(addr, data)) {
+    if (cart != nullptr && cart->cpuRead(addr, data)) {
 
     } else if (addr <= 0x1fff) {   // ram
         data = cpuRam[addr & 0x07ff];
@@ -39,7 +46,9 @@ uint8_t Bus::read(uint16_t addr, bool readOnly) {
 }
 
 void Bus::reset() {
-    cart->reset();
+    if (cart != nullptr) {
+        cart->reset();
+    }
     cpu.reset();
     nSystemClockCounter = 0;
 }

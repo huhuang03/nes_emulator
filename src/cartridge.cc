@@ -12,6 +12,7 @@ uint32_t Cartridge::UNIT_CHR = 8 * 1024;
 uint32_t Cartridge::UNIT_PRG = 16 * 1024;
 
 Cartridge::Cartridge(const std::string &sFileName) {
+    if (sFileName.empty()) return;
     // http://wiki.nesdev.com/w/index.php/INES
     struct Header {
         // Constant $4E $45 $53 $1A ("NES" followed by MS-DOS end-of-file)

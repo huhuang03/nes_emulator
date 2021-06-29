@@ -620,6 +620,7 @@ uint8_t CPU::CLV() {
     return 0;
 }
 
+// a = a + fetched.
 uint8_t CPU::ADC() {
     fetch();
     uint16_t tmp = (uint16_t)a + (uint16_t)fetched + (uint16_t)!!getCFlag();
@@ -916,4 +917,18 @@ bool CPU::complete() const {
 
 void CPU::print(uint16_t ip, int before, int after) {
     auto inst_map = disassemble(0x0, 0xFFFF);
+}
+
+void CPU::loadByteCodeInHex(const std::string &byteCodeInHex) {
+    std::stringstream ss;
+    uint16_t nOffset = 0x8000;
+    ss << byteCodeInHex;
+    while (!ss.eof()) {
+        // yes, this will jump space.
+        std::string b;
+        ss >> b;
+        bus->write(nOffset++, (uint8_t) std::stol(b, nullptr, 16));
+    }
+    bus->write(0xFFFC, 0x00);
+    bus->write(0xFFFD, 0x80);
 }

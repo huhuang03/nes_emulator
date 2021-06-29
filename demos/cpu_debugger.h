@@ -6,10 +6,10 @@
 #define NES_CPU_DEBUGGER_H
 
 
-#define OLC_PGE_APPLICATION
-#include "../src/olcPixelGameEngine.h"
 #include "../src/bus.h"
 #include <map>
+#define OLC_PGE_APPLICATION
+#include "../src/olcPixelGameEngine.h"
 
 class CPUDebugger: public olc::PixelGameEngine {
 private:

@@ -26,17 +26,7 @@ bool CPUDebugger::OnUserCreate() {
         NOP
         NOP
     */
-    std::stringstream ss;
-    ss << "A2 0A 8E 00 00 A2 03 8E 01 00 AC 00 00 A9 00 18 6D 01 00 88 D0 FA 8D 02 00 EA EA EA";
-    uint16_t nOffset = 0x8000;
-    while (!ss.eof()) {
-        // yes, this will jump space.
-        std::string b;
-        ss >> b;
-        nes.write(nOffset++, (uint8_t) std::stol(b, nullptr, 16));
-    }
-    nes.write(0xFFFC, 0x00);
-    nes.write(0xFFFD, 0x80);
+    nes.cpu.loadByteCodeInHex("A2 0A 8E 00 00 A2 03 8E 01 00 AC 00 00 A9 00 18 6D 01 00 88 D0 FA 8D 02 00 EA EA EA");
 
     // seems block at here??
     mapAsm = nes.cpu.disassemble(0x0000, 0xFFFF);

@@ -11,6 +11,7 @@
 #include <string>
 
 #include "mapper_000.h"
+#include <memory>
 
 // prg is 16kb units
 // chr is 8kb units
@@ -53,8 +54,8 @@ public:
     } mirror = HORIZONTAL;
 
 public:
-    bool cpuRead(uint16_t addr, uint8_t& data);
-    bool cpuWrite(uint16_t addr, uint8_t data);
+    virtual bool cpuRead(uint16_t addr, uint8_t& data);
+    virtual bool cpuWrite(uint16_t addr, uint8_t data);
 
     // Community with own buss
     bool ppuRead(uint16_t addr, uint8_t& data);

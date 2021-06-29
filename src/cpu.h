@@ -93,13 +93,19 @@ public:
     uint8_t read(uint16_t addr);
     void write(uint16_t addr, uint8_t data);
 
-    uint8_t getFlag(FLAGS f) const;
-    void setFlag(FLAGS f, bool v);
-
     /**
      * @return key is instruction start pos, value is the instruction string.
      */
     std::map<uint16_t, std::string> disassemble(uint16_t start, uint16_t end);
+
+    uint8_t getFlag(FLAGS f) const;
+    void setFlag(FLAGS f, bool v);
+
+    /**
+     * Only load at 0x8000
+     * @param byteCodeInHex
+     */
+    void loadByteCodeInHex(const std::string &byteCodeInHex);
 
 private:
     Bus *bus;
@@ -116,6 +122,7 @@ private:
 
 // helper functions
 private:
+
     uint8_t readPc();
 
     /**
