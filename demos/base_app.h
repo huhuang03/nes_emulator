@@ -8,6 +8,8 @@
 #include <bus.h>
 #include "olcPixelGameEngine.h"
 
+using namespace th;
+
 class BaseApp : public olc::PixelGameEngine {
 
 protected:

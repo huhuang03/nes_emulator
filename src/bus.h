@@ -12,34 +12,39 @@
 #include "ppu/ppu.h"
 #include "cartridge.h"
 
-class Bus {
-private:
-    // 2kb
-    std::array<uint8_t, 0x800> cpuRam;
-    std::shared_ptr<Cartridge> cart;
+namespace th {
+    class Bus {
+    private:
+        // 2kb
+        std::array<uint8_t, 0x800> cpuRam = {0};
+        std::shared_ptr<Cartridge> cart;
 
-    // so system clock is my clock， also the ppu clock
-    uint32_t nSystemClockCounter = 0;
+        // so system clock is my clock， also the ppu clock
+        uint32_t nSystemClockCounter = 0;
 
-public:
-    Bus();
-    ~Bus();
+    public:
+        Bus();
 
-public:
-    // Devices
-    CPU cpu;
-    PPU ppu;
+        ~Bus();
 
-    void clockCpu();
+    public:
+        // Devices
+        CPU cpu;
+        PPU ppu;
 
-    uint8_t read(uint16_t addr, bool readOnly = false);
-    void write(uint16_t addr, uint8_t data);
+        void clockCpu();
 
-public: // System Interface
-    void insertCartridge(const std::shared_ptr<Cartridge>& cartridge);
-    void reset();
-    void clock();
-};
+        uint8_t read(uint16_t addr, bool readOnly = false);
 
+        void write(uint16_t addr, uint8_t data);
 
+    public: // System Interface
+        void insertCartridge(const std::shared_ptr<Cartridge> &cartridge);
+
+        void reset();
+
+        void clock();
+    };
+
+}
 #endif //NES_BUS_H
