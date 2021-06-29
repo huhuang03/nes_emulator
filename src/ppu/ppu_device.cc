@@ -4,6 +4,8 @@
 
 #include "ppu_device.h"
 
-void PPUDevice::setPPU(PPU *ppu1) {
-    this->ppu = ppu1;
+namespace th {
+    void PPUDevice::setPPU(PPU *ppu1) {
+        this->ppu = ppu1;
+    }
 }

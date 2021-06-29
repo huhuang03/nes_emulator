@@ -7,18 +7,21 @@
 
 #include <cstdint>
 
-class PPU;
+namespace th {
+    class PPU;
 
-class PPUDevice {
-public:
-    void setPPU(PPU *ppu1);
+    class PPUDevice {
+    public:
+        void setPPU(PPU *ppu1);
 
-protected:
-    PPU* ppu = nullptr;
-    virtual uint8_t read(uint16_t addr) = 0;
-    virtual void write(uint16_t addr, uint8_t data) = 0;
-    friend class PPU;
-};
+    protected:
+        PPU *ppu = nullptr;
 
+        virtual uint8_t read(uint16_t addr) = 0;
 
+        virtual void write(uint16_t addr, uint8_t data) = 0;
+
+        friend class PPU;
+    };
+}
 #endif //NES_PPU_DEVICE_H

@@ -6,7 +6,7 @@
 #define NES_CPU_DEBUGGER_H
 
 
-#include "../src/bus.h"
+#include "include/th_nes/bus.h"
 #include <map>
 #define OLC_PGE_APPLICATION
 #include "../src/olcPixelGameEngine.h"

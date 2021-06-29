@@ -8,20 +8,20 @@
 #include "../../olcPixelGameEngine.h"
 #include "../name_table.h"
 
-
+namespace th {
 /**
  * UINameTable is private. So how can yo public?
  */
-class UINameTable {
-public:
-    explicit UINameTable(NameTable *nameTable);
+    class UINameTable {
+    public:
+        explicit UINameTable(NameTable *nameTable);
 
-private:
-    NameTable *nameTable;
+    private:
+        NameTable *nameTable;
 
-public:
-    void drawNo(olc::PixelGameEngine *engine, int x, int y);
-};
+    public:
+        void drawNo(olc::PixelGameEngine *engine, int x, int y);
+    };
 
-
+}
 #endif //NES_UI_NAME_TABLE_H

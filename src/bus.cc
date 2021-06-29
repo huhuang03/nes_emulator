@@ -2,7 +2,7 @@
 // Created by huhua on 2021/5/22.
 //
 
-#include "bus.h"
+#include "th_nes/bus.h"
 #include "util.h"
 
 /**

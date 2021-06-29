@@ -2,8 +2,8 @@
 // Created by huhua on 2021/5/22.
 //
 
-#include "cpu.h"
-#include "bus.h"
+#include "th_nes/cpu.h"
+#include "include/th_nes/bus.h"
 #include <stdexcept>
 #include <iostream>
 

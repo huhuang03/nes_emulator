@@ -25,5 +25,6 @@ include(GoogleTest)
 gtest_discover_tests(test_cpu)
 
 # What to do?
-target_include_directories(test_cpu PRIVATE "../src/")
+target_include_directories(test_cpu PRIVATE "../src/include")
+target_include_directories(test_cpu PRIVATE "../src")
 target_include_directories(test_cpu PRIVATE "../olc_origin")

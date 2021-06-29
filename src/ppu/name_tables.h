@@ -8,44 +8,46 @@
 #include "./name_table.h"
 #include "./ppu_device.h"
 
+namespace th {
 /**
  * I have two real table, and two mirror table
  */
-class NameTables: public PPUDevice {
+    class NameTables : public PPUDevice {
 
-public:
-    const int addr_min = 0x2000;
-    // 4 * 32 * 30
-    const int addr_max = 0x3eff;
+    public:
+        const int addr_min = 0x2000;
+        // 4 * 32 * 30
+        const int addr_max = 0x3eff;
 
-    const uint16_t t1_min = 0x2000;
-    const uint16_t t1_max = 0x23ff;
+        const uint16_t t1_min = 0x2000;
+        const uint16_t t1_max = 0x23ff;
 
-    const uint16_t t2_min = 0x2400;
-    const uint16_t t2_max = 0x27ff;
+        const uint16_t t2_min = 0x2400;
+        const uint16_t t2_max = 0x27ff;
 
-    const uint16_t t3_min = 0x2800;
-    const uint16_t t3_max = 0x2dff;
+        const uint16_t t3_min = 0x2800;
+        const uint16_t t3_max = 0x2dff;
 
-    const uint16_t t4_min = 0x2c00;
-    const uint16_t t4_max = 0x2fff;
+        const uint16_t t4_min = 0x2c00;
+        const uint16_t t4_max = 0x2fff;
 
-    // haha, base friend is not work.
-    friend class PPU;
+        // haha, base friend is not work.
+        friend class PPU;
 
-private:
-    // 这里复制吗。我们测试一下就知道了
-    NameTable& getTable(uint16_t);
+    private:
+        // 这里复制吗。我们测试一下就知道了
+        NameTable &getTable(uint16_t);
 
-protected:
-    uint8_t read(uint16_t addr) override;
-    void write(uint16_t addr, uint8_t data) override;
+    protected:
+        uint8_t read(uint16_t addr) override;
 
-public:
-    // physic table
-    NameTable t1;
-    NameTable t2;
-};
+        void write(uint16_t addr, uint8_t data) override;
 
+    public:
+        // physic table
+        NameTable t1;
+        NameTable t2;
+    };
 
+}
 #endif //NES_NAME_TABLES_H

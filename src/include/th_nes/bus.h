@@ -30,7 +30,7 @@ namespace th {
     public:
         // Devices
         CPU cpu;
-        PPU ppu;
+        th::PPU ppu;
 
         void clockCpu();
 

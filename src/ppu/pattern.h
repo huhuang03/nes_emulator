@@ -9,7 +9,6 @@
 #include <cstdint>
 #include "../olcPixelGameEngine.h"
 
-class PPU;
 
 /**
  * What is a pattern?
@@ -29,35 +28,40 @@ class PPU;
  * 我其实到现在也没有搞清楚pattern是什么啊。
  *
  */
-class Pattern {
-private:
-    // this is all single table value.
-    const uint8_t width = 128;
-    const uint8_t height = 128;
-    const uint8_t num_tile = 16;
-    const uint8_t num_pixel_in_tile = 8;
+namespace th {
+    class PPU;
 
-    uint32_t min = 0x0;
-    uint32_t max = 0x1fff;
+    class Pattern {
+    private:
+        // this is all single table value.
+        const uint8_t width = 128;
+        const uint8_t height = 128;
+        const uint8_t num_tile = 16;
+        const uint8_t num_pixel_in_tile = 8;
 
-    uint32_t table1_min = min;
-    uint32_t table1_max = 0xfff;
+        uint32_t min = 0x0;
+        uint32_t max = 0x1fff;
 
-    uint32_t table2_min = 0x1000;
-    uint32_t table2_max = 0x1fff;
+        uint32_t table1_min = min;
+        uint32_t table1_max = 0xfff;
 
-    // mostly as the bg?
-    olc::Sprite sprite1 = olc::Sprite(width, height);
-    olc::Sprite sprite2 = olc::Sprite(width, height);
+        uint32_t table2_min = 0x1000;
+        uint32_t table2_max = 0x1fff;
 
-    olc::Sprite* sprites[2] = {&sprite1, &sprite2};
-    PPU *ppu = nullptr;
+        // mostly as the bg?
+        olc::Sprite sprite1 = olc::Sprite(width, height);
+        olc::Sprite sprite2 = olc::Sprite(width, height);
 
-public:
-    explicit Pattern() = default;;
-    void setPPU(PPU *ppu);
-    olc::Sprite& getSprite(int which, int palette);
-};
+        olc::Sprite *sprites[2] = {&sprite1, &sprite2};
+        PPU *ppu = nullptr;
 
+    public:
+        explicit Pattern() = default;;
 
+        void setPPU(PPU *ppu);
+
+        olc::Sprite &getSprite(int which, int palette);
+    };
+
+}
 #endif //NES_PATTERN_H

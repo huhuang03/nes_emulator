@@ -5,14 +5,16 @@
 #include "ui_name_table.h"
 #include "../../util.h"
 
-void UINameTable::drawNo(olc::PixelGameEngine *engine, int x, int y) {
-    for (int r = 0; r < nameTable->height; ++r) {
-        for (int c = 0; c < nameTable->width; ++c) {
-            engine->DrawString(c * 16, r * 16, hex(this->nameTable->data[r * nameTable->width + c], 2));
+namespace th {
+    void UINameTable::drawNo(olc::PixelGameEngine *engine, int x, int y) {
+        for (int r = 0; r < nameTable->height; ++r) {
+            for (int c = 0; c < nameTable->width; ++c) {
+                engine->DrawString(c * 16, r * 16, hex(this->nameTable->data[r * nameTable->width + c], 2));
+            }
         }
     }
-}
 
-UINameTable::UINameTable(NameTable *nameTable) {
-    this->nameTable = nameTable;
+    UINameTable::UINameTable(NameTable *nameTable) {
+        this->nameTable = nameTable;
+    }
 }

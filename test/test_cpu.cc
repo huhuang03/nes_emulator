@@ -1,22 +1,25 @@
 //
 // Created by huhua on 2021/6/27.
 //
+#include <Bus.h>
 
 #include <gtest/gtest.h>
-#include <bus.h>
+#include <th_nes/bus.h>
 #include "empty_cartridge.h"
+
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
-#include <Bus.h>
+// 大小写好像不敏感啊。
 
 TEST(CPUTEST, CompareCPU) {
-    Bus right;
+    Bus rightBus;
+    th::Bus compareBus;
 }
 
 TEST(CPUTest, Test1) {
-    Bus bus;
+    th::Bus bus;
 
     // Load Program (assembled at https://www.masswerk.at/6502/assembler.html)
     /*
@@ -37,11 +40,11 @@ TEST(CPUTest, Test1) {
         NOP
         NOP
     */
-    bus.insertCartridge(std::make_shared<EmptyCartridge>());
+    bus.insertCartridge(std::make_shared<th::EmptyCartridge>());
     bus.cpu.loadByteCodeInHex("A2 0A 8E 00 00 A2 03 8E 01 00 AC 00 00 A9 00 18 6D 01 00 88 D0 FA 8D 02 00 EA EA EA");
     // fuck look like we need load a nes.
     bus.reset();
-    CPU *cpu = &bus.cpu;
+    th::CPU *cpu = &bus.cpu;
     ASSERT_EQ(cpu->x, 0);
 
 //    LDX #10
@@ -70,7 +73,7 @@ TEST(CPUTest, Test1) {
 
 //    CLC
     bus.clockCpu();
-    ASSERT_EQ(cpu->getFlag(CPU::C), 0);
+    ASSERT_EQ(cpu->getFlag(th::CPU::C), 0);
 
 //            loop
 //    ADC $0001
