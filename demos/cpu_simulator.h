@@ -23,7 +23,7 @@ private:
     float fResidualTime = 0.0f;
     int nSelectPalette = 0;
     // I need create you at runtime
-    UIPPU *uiPPU = nullptr;
+    th::UIPPU *uiPPU = nullptr;
 
     void drawPalette(int y);
 

@@ -5,17 +5,17 @@
 #include "cpu_simulator.h"
 
 bool CPUSimulator::OnUserCreate() {
-    uiPPU = new UIPPU(&nes.ppu);
-    cate = std::make_shared<Cartridge>("../assets/nestest.nes");
+    uiPPU = new th::UIPPU(&nes.ppu);
+    cate = std::make_shared<th::Cartridge>("../assets/nestest.nes");
     nes.insertCartridge(cate);
 
     mapAsm = nes.cpu.disassemble(0x0000, 0xFFFF);
     nes.reset();
 
     // run to 0xc037?
-    while (nes.cpu.pc != 0xc037) {
-        nes.clockCpu();
-    }
+//    while (nes.cpu.pc != 0xc037) {
+//        nes.clockCpu();
+//    }
 
     return true;
 }

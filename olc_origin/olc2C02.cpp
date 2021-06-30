@@ -51,7 +51,7 @@
 
 	Author
 	~~~~~~
-	David Barr, aka javidx9, ©OneLoneCoder 2019
+	David Barr, aka javidx9, ï¿½OneLoneCoder 2019
 */
 
 #include "olc2C02.h"
@@ -310,6 +310,7 @@ uint8_t olc2C02::cpuRead(uint16_t addr, bool rdonly)
 			// represent the last PPU bus transaction. Some games "may"
 			// use this noise as valid data (even though they probably
 			// shouldn't)
+//            status.vertical_blank = 1;
 			data = (status.reg & 0xE0) | (ppu_data_buffer & 0x1F);
 
 			// Clear the vertical blanking flag

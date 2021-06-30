@@ -6,11 +6,11 @@
 namespace th {
 
     uint8_t NameTable::read(uint16_t addr) {
-        return this->data[addr & 0x400];
+        return this->data[addr & 0x3FF];
     }
 
-    void NameTable::write(uint16_t addr, uint8_t data) {
-        this->data[addr & 0x400] = data;
+    void NameTable::write(uint16_t addr, uint8_t pData) {
+        this->data[addr & 0x3FF] = pData;
     }
 
 }

@@ -17,10 +17,32 @@ namespace th {
     static const int OP_ADDR = 0x6;
     static const int OP_DATA = 0x7;
 
+    /**
+     * @param readOnly If need read the status, without effect other, like assembly. we need readOnly
+     */
     uint8_t Bridge::read(uint16_t addr, bool readOnly) {
         assert(addr <= 7);
 
         uint8_t data = 0x00;
+
+        if (readOnly) {
+            switch (addr) {
+                case OP_CONTROL:
+                    data = ppu->control.reg;
+                    break;
+                case OP_MASK:
+                    data = ppu->mask.reg;
+                    break;
+                case OP_STATUS:
+                    data = ppu->status.reg;
+                    break;
+                default:
+                    break;
+            }
+            return data;
+        }
+
+
         switch (addr) {
             case OP_CONTROL:
 //            std::cout << "why you read from control" << std::endl;
@@ -33,6 +55,7 @@ namespace th {
                 // not work at all.
                 // why I dont' set this, also passed?
                 // ppu->status.vertical_blank = 1;
+                // 0xcc??
                 data = (ppu->status.reg & 0xE0) | (ppu_data_buffer & 0x1f);
                 ppu->status.vertical_blank = 0;
                 address_latch = 0;

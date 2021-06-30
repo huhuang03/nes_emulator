@@ -22,11 +22,12 @@ void printCodeMap(CodeMap& codeMap) {
 }
 
 void compareCpu(Bus &cpu1, th::Bus &cpu2) {
-    for (uint16_t addr = 0; addr <= 0xFFFF; addr++) {
-        auto data1 = cpu1.cpuRead(addr, false);
-        auto data2 = cpu2.read(addr, false);
+    for (uint32_t addr = 0; addr <= 0xFFFF; addr++) {
+        uint16_t tmpAddr = addr;
+        auto data1 = cpu1.cpuRead(tmpAddr, true);
+        auto data2 = cpu2.read(tmpAddr, true);
         // why you not error right now.
-        ASSERT_EQ(data1, data2) << " at pc: " << hex(cpu1.cpu.pc, 4) << ", addr: " << hex(addr, 4);
+        ASSERT_EQ(data1, data2) << ", data1: " << hex(data1, 2) << " at pc: " << hex(cpu1.cpu.pc, 4) << ", addr: " << hex(addr, 4);
     }
     ASSERT_EQ(cpu1.cpu.pc, cpu2.cpu.pc) << " at pc: " << hex(cpu1.cpu.pc, 4);
     ASSERT_EQ(cpu1.cpu.x, cpu2.cpu.x) << " at pc: " << hex(cpu1.cpu.pc, 4);
@@ -48,7 +49,7 @@ TEST(CPUTEST, CompareCPU) {
     compareBus.insertCartridge(std::make_shared<th::Cartridge>(nesPath));
     compareBus.reset();
 
-    std::map<std::uint16_t, std::string> compareAssemble = rightBus.cpu.disassemble(0x0, 0xFFFF);
+    std::map<std::uint16_t, std::string> compareAssemble = compareBus.cpu.disassemble(0x0, 0xFFFF);
 
     auto it1 = rightAssemble.begin();
     auto it2 = compareAssemble.begin();
@@ -57,11 +58,16 @@ TEST(CPUTEST, CompareCPU) {
         ASSERT_EQ(it1->second, it2->second);
         it1++;
         it2++;
+//        std::cout << it1->first << std::endl;
     }
 
-//    do {
+    do {
         compareCpu(rightBus, compareBus);
-//    } while (true);
+        rightBus.clockCpu();
+        compareBus.clockCpu();
+        // why you not stop??
+        std::cout << "after clock pc: " << hex(rightBus.cpu.pc, 4) <<  std::endl;
+    } while (true);
 
 }
 

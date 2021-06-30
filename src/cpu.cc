@@ -1126,9 +1126,9 @@ namespace th {
                 sInst += "$" + hex(lo, 2) + ", X {ZPX}";
             } else if (inst.addrmode == &CPU::ZPY) {
                 lo = read8();
-                sInst += "$" + hex(lo, 2) + ", Y {ZP0}";
+                sInst += "$" + hex(lo, 2) + ", Y {ZPY}";
             } else if (inst.addrmode == &CPU::IZX) {
-                sInst += "$" + hex(read8(), 2) + ", X) {IZX}";
+                sInst += "($" + hex(read8(), 2) + ", X) {IZX}";
             } else if (inst.addrmode == &CPU::IZY) {
                 sInst += "($" + hex(read8(), 2) + "), Y {IZY}";
             } else if (inst.addrmode == &CPU::ABS) {

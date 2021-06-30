@@ -41,9 +41,12 @@ namespace th {
         if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
             // The data is not right.
             // but the data is not right
+            if (data == 0x20) {
+                std::cout << "write 0x20 to nameTables: " << hex(addr, 4) << ", val: " << hex(data, 1) << std::endl;
+            }
             if (addr == nameTables.addr_min) {
                 // pc is 49207 0xc037
-                std::cout << "write to nameTables: " << hex(addr, 4) << ", val: " << hex(data, 1) << std::endl;
+//                std::cout << "write to nameTables: " << hex(addr, 4) << ", val: " << hex(data, 1) << std::endl;
                 // fuck, I want know the cpu ip
 //            std::cout << "pc: " <<  << std::endl;
             }
@@ -63,22 +66,22 @@ namespace th {
     }
 
     void PPU::clock() {
+        // leave vertical black
         if (scanline == -1 && cycle == 1) {
             status.vertical_blank = 0;
         }
 
-        // we are no output of the height
-        // why judge the cycle, I don't now for now.
-        // and what is the cycle, I don't know either.
-        if (scanline == height + 1 && cycle == 1) {
-            // what is the vertical_blank
+
+        if (scanline == validate_scan_lines + 1 && cycle == 1) {
+            // enter vertical_blank
             status.vertical_blank = 1;
             if (control.enable_nmi) {
                 nmi = true;
             }
         }
 
-        sprScreen.SetPixel(cycle - 1, scanline, rand() % 2 ? black : white);
+
+//        sprScreen.SetPixel(cycle - 1, scanline, rand() % 2 ? black : white);
 
         cycle++;
 
@@ -114,6 +117,12 @@ namespace th {
 
     olc::Sprite &PPU::getPattern(int which, int nPalette) {
         return this->pattern.getSprite(which, nPalette);
+    }
+
+    void PPU::reset() {
+        this->status.reg = 0;
+        this->control.reg = 0;
+        this->mask.reg = 0;
     }
 
 }

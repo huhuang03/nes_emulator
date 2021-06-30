@@ -41,7 +41,7 @@ namespace th {
         const uint16_t scan_width = 341;
         const uint16_t scan_height = 261;
         const uint16_t width = 256;
-        const uint16_t height = 240;
+        const uint16_t validate_scan_lines = 240;
 
         friend class Bridge;
 
@@ -50,7 +50,13 @@ namespace th {
         friend class UIPPU;
 
     public:
+        // I don't know what's the nmi
+        bool nmi = false;
+
+    public:
         PPU();
+
+        void reset();
 
         /**
          * This is called by cpu, and when read cpu range 0x2000 - 0x3ffff, is read to ppu.
@@ -80,7 +86,7 @@ namespace th {
 
     private:
         // | olc::Sprite - An image represented by a 2D array of olc::Pixel               |
-        olc::Sprite sprScreen = olc::Sprite(width, height);
+        olc::Sprite sprScreen = olc::Sprite(width, validate_scan_lines);
 
     public:
         // Helper method
@@ -88,8 +94,6 @@ namespace th {
 
         // Debugging Utilities
         olc::Sprite &GetScreen();
-
-        olc::Sprite &GetNameTable(uint8_t which);
 
         bool frame_complete = false;
 
@@ -121,7 +125,7 @@ namespace th {
                 uint8_t enhance_blue: 1;
             };
             uint8_t reg;
-        } mask{};
+        } mask;
 
         union {
             struct {
@@ -132,7 +136,7 @@ namespace th {
                 uint8_t vertical_blank: 1;
             };
             uint8_t reg;
-        } status{};
+        } status;
 
         union {
             struct {
@@ -146,12 +150,10 @@ namespace th {
                 uint8_t enable_nmi: 1;
             };
             uint8_t reg;
-        } control{};
+        } control;
 
 
     private:
-        // I don't know what's the nmi
-        bool nmi = false;
     };
 }
 #endif //NES_PPU_H

@@ -17,7 +17,7 @@ namespace th {
 // I think a name table is 1kb.
 // which is unit of 32 x 32
 // And a unit is just a byte, 8 bit. which is 0 - 255
-// How to use that byte, I didn't figure out for now.
+// A unit is an id in pattern table
     class NameTable : PPUDevice {
     public:
         const int width = 32;
@@ -28,9 +28,6 @@ namespace th {
 
     private:
         uint8_t data[1024] = {0};
-
-        const int size_bytes = 1 * 1024;
-        const int num_entries = 32;
 
         friend class UINameTable;
 

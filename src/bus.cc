@@ -29,7 +29,7 @@ namespace th {
             cpuRam[addr & 0x07ff] = data;
         } else if (addr >= 0x2000 && addr <= 0x3fff) {  // ppu
             // fuck, how can I debug you??
-            std::cout << "write to ppu, " << hex(addr, 4) << ": " << hex(data, 1) << std::endl;
+//            std::cout << "write to ppu, " << hex(addr, 4) << ": " << hex(data, 1) << std::endl;
             ppu.cpuWrite(addr & 0x0007, data);
         } else if (addr >= 0x4016 && addr <= 0x4017)
         {
@@ -58,6 +58,7 @@ namespace th {
             cart->reset();
         }
         cpu.reset();
+        ppu.reset();
         nSystemClockCounter = 0;
     }
 
@@ -75,6 +76,12 @@ namespace th {
         if (nSystemClockCounter % 3 == 0) {
             // cpu is slower than ppu.
             cpu.clock();
+        }
+
+        if (ppu.nmi) {
+            // enter interpreter?
+            ppu.nmi = false;
+            cpu.nmi();
         }
 
         nSystemClockCounter++;
