@@ -21,6 +21,8 @@ namespace th {
 
         // so system clock is my clock， also the ppu clock
         uint32_t nSystemClockCounter = 0;
+        // Internal cache of controller state
+        uint8_t controller_state[2] = {0};
 
     public:
         Bus();
@@ -31,6 +33,8 @@ namespace th {
         // Devices
         CPU cpu;
         th::PPU ppu;
+        // Controllers
+        uint8_t controller[2] = {0};
 
         void clockCpu();
 

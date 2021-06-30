@@ -26,7 +26,7 @@ void compareCpu(Bus &cpu1, th::Bus &cpu2) {
         auto data1 = cpu1.cpuRead(addr, false);
         auto data2 = cpu2.read(addr, false);
         // why you not error right now.
-        ASSERT_EQ(data1, data2) << " at pc: " << hex(cpu1.cpu.pc, 4) << ", addr: " << addr;
+        ASSERT_EQ(data1, data2) << " at pc: " << hex(cpu1.cpu.pc, 4) << ", addr: " << hex(addr, 4);
     }
     ASSERT_EQ(cpu1.cpu.pc, cpu2.cpu.pc) << " at pc: " << hex(cpu1.cpu.pc, 4);
     ASSERT_EQ(cpu1.cpu.x, cpu2.cpu.x) << " at pc: " << hex(cpu1.cpu.pc, 4);

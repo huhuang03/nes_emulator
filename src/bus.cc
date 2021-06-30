@@ -31,6 +31,9 @@ namespace th {
             // fuck, how can I debug you??
             std::cout << "write to ppu, " << hex(addr, 4) << ": " << hex(data, 1) << std::endl;
             ppu.cpuWrite(addr & 0x0007, data);
+        } else if (addr >= 0x4016 && addr <= 0x4017)
+        {
+            controller_state[addr & 0x0001] = controller[addr & 0x0001];
         }
     }
 
@@ -42,6 +45,10 @@ namespace th {
             data = cpuRam[addr & 0x07ff];
         } else if (addr >= 0x2000 && addr <= 0x3fff) {  // ppu
             data = ppu.cpuRead(addr & 0x0007, readOnly);
+        } else if (addr >= 0x4016 && addr <= 0x4017)
+        {
+            data = (controller_state[addr & 0x0001] & 0x80) > 0;
+            controller_state[addr & 0x0001] <<= 1;
         }
         return data;
     }
