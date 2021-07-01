@@ -509,7 +509,8 @@ namespace th {
  * Flags Out: N, Z
  */
     uint8_t CPU::EOR() {
-        a = a ^ read(addr_abs);
+        fetch();
+        a = a ^ fetched;
         updateFlagN(a);
         updateFlagZ(a);
         return 1;
@@ -520,7 +521,8 @@ namespace th {
  * Flags Out: N, Z
  */
     uint8_t CPU::INC() {
-        uint8_t tmp = read(addr_abs) + 1;
+        fetch();
+        uint8_t tmp = fetch() + 1;
         write(addr_abs, tmp);
         updateFlagN(tmp);
         updateFlagZ(tmp);
@@ -608,6 +610,8 @@ namespace th {
         // Still, strange C
         setFlag(C, fetched & 0x0001);
         uint16_t tmp = fetched >> 1;
+        updateFlagZ(tmp);
+        setFlag(N, tmp);
         if (isImp()) {
             a = tmp & 0xFF;
         } else {
@@ -620,6 +624,7 @@ namespace th {
         switch (opcode) {
             case 0x1C:
             case 0x3C:
+            case 0x5C:
             case 0x7C:
             case 0xDC:
             case 0xFC:
@@ -633,7 +638,8 @@ namespace th {
  * Flags Out: N, Z
  */
     uint8_t CPU::ORA() {
-        a = a | read(addr_abs);
+        fetch();
+        a = a | fetched;
         updateFlagZ(a);
         updateFlagZ(a);
         return 1;
@@ -996,7 +1002,7 @@ namespace th {
     }
 
     uint8_t CPU::fetch() {
-        // because IMP didn't set the addr_abs
+        // because IMP didn't use the addr_abs
         if (!isImp()) {
             fetched = read(addr_abs);
         }

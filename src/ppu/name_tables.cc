@@ -13,7 +13,11 @@ namespace th {
     }
 
     void NameTables::write(uint16_t addr, uint8_t data) {
-        getTable(addr).write(addr, data);
+        auto table = getTable(addr);
+        table.write(addr, data);
+        if (&table == &this->t1) {
+            std::cout << "write to table1 called" << std::endl;
+        }
     }
 
     NameTable &NameTables::getTable(uint16_t addr) {

@@ -9,7 +9,9 @@
 #include "./ppu_device.h"
 
 namespace th {
+
 /**
+ * https://wiki.nesdev.com/w/index.php/PPU_nametables
  * I have two real table, and two mirror table
  */
     class NameTables : public PPUDevice {

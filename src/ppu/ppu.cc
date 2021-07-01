@@ -24,7 +24,6 @@ namespace th {
     uint8_t PPU::ppuRead(uint16_t addr, bool readOnly) {
         uint8_t data = 0x00;
         if (cart->ppuRead(addr, data)) {
-
         } else if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
             data = nameTables.read(addr);
         } else if (addr >= palette.addr_min && addr <= palette.addr_max) {

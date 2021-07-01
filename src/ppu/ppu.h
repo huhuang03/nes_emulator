@@ -88,6 +88,7 @@ namespace th {
 
     private:
         // | olc::Sprite - An image represented by a 2D array of olc::Pixel               |
+        // 这里居然回收错误？
         olc::Sprite sprScreen = olc::Sprite(width, validate_scan_lines);
 
     public:

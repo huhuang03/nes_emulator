@@ -2,6 +2,7 @@
 // Created by huhua on 2021/6/21.
 //
 
+#include <iostream>
 #include "name_table.h"
 namespace th {
 
