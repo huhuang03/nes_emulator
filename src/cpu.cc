@@ -483,7 +483,7 @@ namespace th {
  * Flags Out: Z, N
  */
     uint8_t CPU::DEC() {
-        uint16_t value = (uint16_t) read(addr_abs) - 1;
+        uint16_t value = fetch() - 1;
         write(addr_abs, value & 0xFF);
         updateFlagZ(value & 0xFF);
         updateFlagN(value & 0XFF);

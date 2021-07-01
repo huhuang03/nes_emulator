@@ -92,7 +92,8 @@ namespace th {
                 break;
             case OP_STATUS:
                 // you can't write status?
-                throw std::runtime_error("Actually, you can't write to status.");
+                std::cout << "why you can write to status? " << std::endl;
+                // throw std::runtime_error("Actually, you can't write to status.");
                 break;
             case OP_OAM_ADDR:
                 break;

@@ -105,6 +105,11 @@ void CPUSimulator::drawPalette(int y) {
     DrawRect(516 + nSelectPalette * (nSwatchSize * 5) - 1, 339, (nSwatchSize * 4), nSwatchSize, olc::WHITE);
 }
 
+void abort()
+{
+    std::cout << "aborting" << std::endl; // put break here...
+    exit(-1);
+}
 
 /**
  * Not work for now, because we must plugin cartridge.

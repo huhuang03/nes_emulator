@@ -39,16 +39,8 @@ namespace th {
     void PPU::ppuWrite(uint16_t addr, uint8_t data) {
         // why mirror??
         if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
-            // The data is not right.
-            // but the data is not right
-            if (data == 0x20) {
-                std::cout << "write 0x20 to nameTables: " << hex(addr, 4) << ", val: " << hex(data, 1) << std::endl;
-            }
-            if (addr == nameTables.addr_min) {
-                // pc is 49207 0xc037
-//                std::cout << "write to nameTables: " << hex(addr, 4) << ", val: " << hex(data, 1) << std::endl;
-                // fuck, I want know the cpu ip
-//            std::cout << "pc: " <<  << std::endl;
+            if (data != 0 && data != 0x20) {
+                std::cout << "nameTables Write not 0 and 0x20" << std::endl;
             }
             nameTables.write(addr, data);
         } else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
