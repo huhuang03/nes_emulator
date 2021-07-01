@@ -28,8 +28,6 @@ namespace th {
         } else if (addr <= 0x1fff) {    // ram
             cpuRam[addr & 0x07ff] = data;
         } else if (addr >= 0x2000 && addr <= 0x3fff) {  // ppu
-            // fuck, how can I debug you??
-//            std::cout << "write to ppu, " << hex(addr, 4) << ": " << hex(data, 1) << std::endl;
             ppu.cpuWrite(addr & 0x0007, data);
         } else if (addr >= 0x4016 && addr <= 0x4017)
         {

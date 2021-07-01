@@ -27,7 +27,7 @@ namespace th {
         friend class NameTables;
 
     private:
-        uint8_t data[1024] = {0};
+        uint8_t data[0x400] = {0};
 
         friend class UINameTable;
 

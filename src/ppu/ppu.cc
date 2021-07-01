@@ -36,13 +36,19 @@ namespace th {
     static int count = 0;
 
     void PPU::ppuWrite(uint16_t addr, uint8_t data) {
-        // why mirror??
-        if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
+        // why &= 0x3FFF
+        addr &= 0x3FFF;
+        if (cart->ppuWrite(addr, data)) {
+
+        } else if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
+//            std::cout << "write to ppu " << hex(addr, 4) << ": " << hex(data, 2) << std::endl;
             if (data != 0 && data != 0x20) {
+                std::cout << "write to nameTables " << hex(addr, 4) << ": " << hex(data, 2) << std::endl;
 //                std::cout << "nameTables Write not 0 and 0x20" << std::endl;
             }
             nameTables.write(addr, data);
         } else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
+            // why some strange value??
             palette.write(addr, data);
         }
         // should throw here?
