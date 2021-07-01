@@ -92,6 +92,10 @@ namespace th {
     bool Cartridge::ppuRead(uint16_t addr, uint8_t &data) {
         uint32_t mapped_addr = 0;
         if (pMapper->ppuMapRead(addr, mapped_addr)) {
+            // addr: 16130 0x3f02
+            if (addr <= 0x0ff) {
+//                std::cout << "here" << std::endl;
+            }
             data = vCHRMemory[mapped_addr];
             return true;
         }

@@ -6,8 +6,6 @@
 #include "ppu.h"
 #include <string>
 
-//olc::Pixel Palette::getColor(int palette, int index) {
-//}
 namespace th {
 
     Palette::Palette() {
@@ -81,14 +79,11 @@ namespace th {
     }
 
     uint8_t Palette::read(uint16_t addr, bool grayscale) {
-        addr &= 0x001F;
         // why have this scale?
         return data[mirror(addr)] & (grayscale ? 0x30 : 0x3F);
     }
 
     void Palette::write(uint16_t addr, uint8_t pData) {
-        addr &= 0x001f;
-
         this->data[mirror(addr)] = pData;
     }
 
@@ -101,11 +96,16 @@ namespace th {
     }
 
     uint16_t Palette::mirror(uint16_t addr) {
+        addr &= 0x001F;
         if (addr == 0x0010) addr = 0x0000;
         if (addr == 0x0014) addr = 0x0004;
         if (addr == 0x0018) addr = 0x0008;
         if (addr == 0x001C) addr = 0x000C;
         return addr;
+    }
+
+    olc::Pixel Palette::getColor(int which, int index) {
+        return getColor(data[which * 4 + index]);
     }
 
 }

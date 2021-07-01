@@ -49,6 +49,8 @@ namespace th {
 
         friend class UIPPU;
 
+        friend class Pattern;
+
     public:
         // I don't know what's the nmi
         bool nmi = false;

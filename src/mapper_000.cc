@@ -18,6 +18,7 @@ namespace th {
     bool Mapper000::cpuMapWrite(uint16_t addr, uint32_t &mapped_addr) {
         if (addr >= addr_cpu_min && addr <= addr_cpu_max) {
             mapped_addr = addr & (nPRGBanks > 1 ? 0x7FFF : 0x3FFF);
+
             return true;
         }
         return false;
@@ -32,6 +33,18 @@ namespace th {
     }
 
     bool Mapper000::ppuMapWrite(uint16_t addr, uint32_t &mapped_addr) {
+        if (addr == 2) {
+            std::cout << "why write to 2" << std::endl;
+        }
+        if (addr >= addr_ppu_min && addr <= addr_ppu_max)
+        {
+            if (nCHRBanks == 0)
+            {
+                // Treat as RAM
+                mapped_addr = addr;
+                return true;
+            }
+        }
         return false;
     }
 

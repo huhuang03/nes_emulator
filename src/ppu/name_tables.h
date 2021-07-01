@@ -17,7 +17,7 @@ namespace th {
     public:
         const int addr_min = 0x2000;
         // 4 * 32 * 30
-        const int addr_max = 0x3fff;
+        const int addr_max = 0x2fff;
 
         const uint16_t t1_min = 0x2000;
         const uint16_t t1_max = 0x23ff;

@@ -40,7 +40,7 @@ namespace th {
         // why mirror??
         if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
             if (data != 0 && data != 0x20) {
-                std::cout << "nameTables Write not 0 and 0x20" << std::endl;
+//                std::cout << "nameTables Write not 0 and 0x20" << std::endl;
             }
             nameTables.write(addr, data);
         } else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
@@ -101,10 +101,11 @@ namespace th {
         if (index < 0 || index > 3) {
             throw std::runtime_error("index range is [" + std::to_string(0) + " - " + std::to_string(3) + "]");
         }
-//    if (index > 0) {
-//        std::cout << "index: " << std::to_string(index) << std::endl;
-//    }
-        return palette.getColor(ppuRead(palette.addr_min + which_palette * 4 + index));
+
+//        auto c = palette.getColor(which_palette, index);
+//        return c;
+        auto i = ppuRead(palette.addr_min + which_palette * 4 + index);
+        return palette.getColor(i);
     }
 
     olc::Sprite &PPU::getPattern(int which, int nPalette) {

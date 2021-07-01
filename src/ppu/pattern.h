@@ -24,9 +24,6 @@
  * First the first bit of 8 pixel, Then the second bit of 8
  * . . . . . . . .                 . . . . . . . .
  * Followed by the other 7 line of pixel
- *
- * 我其实到现在也没有搞清楚pattern是什么啊。
- *
  */
 namespace th {
     class PPU;

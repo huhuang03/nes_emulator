@@ -34,6 +34,7 @@ namespace th {
 
         uint16_t mirror(uint16_t addr);
 
+
     public:
         void setPPU(PPU *pPpu);
 
@@ -42,6 +43,8 @@ namespace th {
         void write(uint16_t addr, uint8_t data);
 
         olc::Pixel getColor(int index);
+
+        olc::Pixel getColor(int which, int index);
     };
 
 }
