@@ -9,7 +9,13 @@ namespace th {
     void UINameTable::drawNo(olc::PixelGameEngine *engine, int x, int y) {
         for (int r = 0; r < nameTable->height; ++r) {
             for (int c = 0; c < nameTable->width; ++c) {
-                engine->DrawString(c * 16, r * 16, hex(this->nameTable->data[r * nameTable->width + c], 2));
+                auto index = r * nameTable->width + c;
+                auto hexStr = hex(this->nameTable->data[index], 2);
+                if (index == 0x82) {
+//                    std::cout << "get from 0x82: " <<  hexStr << std::endl;
+                    auto i = 1 + 1;
+                }
+                engine->DrawString(x + c * 16, y + r * 16, hexStr);
             }
         }
     }

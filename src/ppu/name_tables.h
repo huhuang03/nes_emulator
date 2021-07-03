@@ -37,8 +37,7 @@ namespace th {
         friend class PPU;
 
     private:
-        // 这里复制吗。我们测试一下就知道了
-        NameTable &getTable(uint16_t);
+        NameTable* getTable(uint16_t);
 
     protected:
         uint8_t read(uint16_t addr) override;

@@ -9,19 +9,15 @@
 namespace th {
 
     uint8_t NameTables::read(uint16_t addr) {
-        return getTable(addr).read(addr);
+        return getTable(addr)->read(addr);
     }
 
     void NameTables::write(uint16_t addr, uint8_t data) {
         auto table = getTable(addr);
-        table.write(addr, data);
-        // can't judge this for now.
-//        if (table == this->t1) {
-//            std::cout << "write to table1 called" << std::endl;
-//        }
+        table->write(addr, data);
     }
 
-    NameTable &NameTables::getTable(uint16_t addr) {
+    NameTable* NameTables::getTable(uint16_t addr) {
         auto in_t1 = in(addr, t1_min, t1_max);
         auto in_t2 = in(addr, t2_min, t2_max);
         auto in_t3 = in(addr, t3_min, t3_max);
@@ -29,17 +25,18 @@ namespace th {
 
         if (ppu->cart->isHorizontal()) {
             if (in_t1 || in_t2) {
-                return this->t1;
+                // 这里我感觉没有错啊
+                return &this->t1;
             } else {
-                return this->t2;
+                return &this->t2;
             }
         } else if (ppu->cart->isVertical()) {
             // t1 t2
             // mi_t1 mi_t2
             if (in_t1 || in_t3) {
-                return this->t1;
+                return &this->t1;
             } else {
-                return this->t2;
+                return &this->t2;
             }
         }
     }
