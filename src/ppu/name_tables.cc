@@ -41,4 +41,9 @@ namespace th {
         }
     }
 
+    void NameTables::setChildPPU(PPU *ppu) {
+        this->t1.setPPU(ppu);
+        this->t2.setPPU(ppu);
+    }
+
 }

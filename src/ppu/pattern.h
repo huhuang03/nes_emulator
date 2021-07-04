@@ -57,7 +57,7 @@ namespace th {
 
         void setPPU(PPU *ppu);
 
-        olc::Sprite &getSprite(int which, int palette);
+        olc::Sprite *getSprite(int which, int palette);
     };
 
 }

@@ -45,9 +45,10 @@ namespace th {
         void write(uint16_t addr, uint8_t data) override;
 
     public:
-        // physic table
         NameTable t1;
         NameTable t2;
+
+        void setChildPPU(PPU *ppu);
     };
 
 }

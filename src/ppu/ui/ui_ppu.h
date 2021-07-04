@@ -20,13 +20,17 @@ namespace th {
 
     private:
         PPU *ppu;
-        UINameTable *uiNameTable1;
-        UINameTable *uiNameTable2;
 
     public:
+        UINameTable *uiNameTable1;
+        UINameTable *uiNameTable2;
         void drawNameTable1No(olc::PixelGameEngine *engine, int x, int y);
 
         void drawNameTable2No(olc::PixelGameEngine *engine, int x, int y);
+
+        void drawNameTable(olc::PixelGameEngine *engine, int x, int y, int whichNameTable, int whichPattern, int whichPalette);
+
+        void drawNameTable(olc::PixelGameEngine *engine, int x, int y, int whichNameTable, olc::Sprite *patternSprite);
     };
 
 }

@@ -21,6 +21,10 @@ namespace th {
 
     public:
         void drawNo(olc::PixelGameEngine *engine, int x, int y);
+
+        void draw(olc::PixelGameEngine *engine, int x, int y, int whichPattern, int whichPalette);
+
+        void draw(olc::PixelGameEngine *engine, int x, int y, olc::Sprite* patternSprite);
     };
 
 }

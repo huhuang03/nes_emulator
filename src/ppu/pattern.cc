@@ -7,7 +7,7 @@
 #include "ppu.h"
 
 namespace th {
-    olc::Sprite &Pattern::getSprite(int which, int palette) {
+    olc::Sprite *Pattern::getSprite(int which, int palette) {
         uint16_t b_start = (which == 0) ? table1_min : table2_min;
         for (int r_t = 0; r_t < num_tile; r_t++) {
             for (int c_t = 0; c_t < num_tile; c_t++) {
@@ -33,7 +33,7 @@ namespace th {
                 }
             }
         }
-        return *this->sprites[which];
+        return this->sprites[which];
     }
 
     void Pattern::setPPU(PPU *pPpu) {

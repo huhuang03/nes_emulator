@@ -21,4 +21,18 @@ namespace th {
         this->uiNameTable2 = new UINameTable(&this->ppu->nameTables.t2);
     }
 
+    void UIPPU::drawNameTable(olc::PixelGameEngine *engine, int x, int y, int whichNameTable, int whichPattern,
+                              int whichPalette) {
+        auto uiNameTable = this->uiNameTable1;
+        if (whichNameTable == 1) {
+            uiNameTable = this->uiNameTable2;
+        }
+        uiNameTable->draw(engine, x, y, whichPattern, whichPalette);
+    }
+
+    void
+    UIPPU::drawNameTable(olc::PixelGameEngine *engine, int x, int y, int whichNameTable, olc::Sprite *patternSprite) {
+
+    }
+
 }

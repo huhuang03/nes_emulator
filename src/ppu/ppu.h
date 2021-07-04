@@ -49,6 +49,8 @@ namespace th {
 
         friend class UIPPU;
 
+        friend class UINameTable;
+
         friend class Pattern;
 
     public:
@@ -74,7 +76,7 @@ namespace th {
         void ppuWrite(uint16_t addr, uint8_t data);
 
     public:
-        olc::Sprite &getPattern(int which, int nPalette);
+        olc::Sprite *getPattern(int which, int nPalette);
 
         Palette palette;
 
@@ -158,5 +160,6 @@ namespace th {
 
     private:
     };
+
 }
 #endif //NES_PPU_H

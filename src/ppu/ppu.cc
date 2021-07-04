@@ -41,9 +41,6 @@ namespace th {
         if (cart->ppuWrite(addr, data)) {
 
         } else if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
-            if (data != 0 && data != 0x20) {
-                std::cout << "nameTables write to " << hex(addr, 4) << ", data: " << hex(data, 2) << std::endl;
-            }
             nameTables.write(addr, data);
         } else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
             // why some strange value??
@@ -98,6 +95,7 @@ namespace th {
         this->pattern.setPPU(this);
         this->palette.setPPU(this);
         this->nameTables.setPPU(this);
+        this->nameTables.setChildPPU(this);
     }
 
     olc::Pixel PPU::getColorInPalette(int which_palette, int index) {
@@ -111,7 +109,7 @@ namespace th {
         return palette.getColor(i);
     }
 
-    olc::Sprite &PPU::getPattern(int which, int nPalette) {
+    olc::Sprite *PPU::getPattern(int which, int nPalette) {
         return this->pattern.getSprite(which, nPalette);
     }
 
