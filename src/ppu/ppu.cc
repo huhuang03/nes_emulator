@@ -41,13 +41,9 @@ namespace th {
         if (cart->ppuWrite(addr, data)) {
 
         } else if (addr >= nameTables.addr_min && addr <= nameTables.addr_max) {
-            if (addr == 0x2082) {
-                std::cout << "write to nameTables " << hex(addr, 4) << ": " << hex(data, 2) << std::endl;
+            if (data != 0 && data != 0x20) {
+                std::cout << "nameTables write to " << hex(addr, 4) << ", data: " << hex(data, 2) << std::endl;
             }
-//            std::cout << "write to ppu " << hex(addr, 4) << ": " << hex(data, 2) << std::endl;
-//            if (data != 0 && data != 0x20) {
-////                std::cout << "nameTables Write not 0 and 0x20" << std::endl;
-//            }
             nameTables.write(addr, data);
         } else if (addr >= palette.mirror_min && addr <= palette.mirror_max) {
             // why some strange value??

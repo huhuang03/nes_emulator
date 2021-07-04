@@ -563,6 +563,8 @@ namespace th {
  * Jump to subroutine
  */
     uint8_t CPU::JSR() {
+        // why pc--??
+//        pc--;
         push16(pc);
         pc = addr_abs;
         return 0;
@@ -1058,7 +1060,7 @@ namespace th {
     }
 
     uint16_t CPU::pop16() {
-        return pop() << 8 | pop();
+        return pop() | pop() << 8;
     }
 
     uint8_t CPU::getFlag(FLAGS f) const {
@@ -1178,5 +1180,11 @@ namespace th {
         }
         bus->write(0xFFFC, 0x00);
         bus->write(0xFFFD, 0x80);
+    }
+
+    void CPU::disassembleToFile(uint16_t start, uint16_t end) {
+        auto codeMap = this->disassemble(start, end);
+        for (auto &code: codeMap) {
+        }
     }
 }

@@ -9,7 +9,7 @@
 #include <array>
 #include <memory>
 #include "cpu.h"
-#include "ppu/ppu.h"
+#include "../../ppu/ppu.h"
 #include "cartridge.h"
 
 namespace th {

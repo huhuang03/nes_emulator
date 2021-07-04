@@ -72,7 +72,6 @@ namespace th {
         // OpCodes
         // http://wiki.nesdev.com/w/index.php/CPU_unofficial_opcodes
         // doc/rockwell_r650x_r651x.pdf
-
         uint8_t ADC();
 
         uint8_t AND();
@@ -220,6 +219,8 @@ namespace th {
          * @return key is instruction start pos, value is the instruction string.
          */
         std::map<uint16_t, std::string> disassemble(uint16_t start, uint16_t end);
+
+        void disassembleToFile(uint16_t start, uint16_t end);
 
         uint8_t getFlag(FLAGS f) const;
 

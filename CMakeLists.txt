@@ -14,3 +14,5 @@ add_subdirectory(olc_origin)
 # now let include test
 add_subdirectory(test)
 
+
+add_subdirectory(script)

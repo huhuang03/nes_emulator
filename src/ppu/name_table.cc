@@ -13,9 +13,6 @@ namespace th {
     }
 
     void NameTable::write(uint16_t addr, uint8_t pData) {
-        if (addr == 0x2082) {
-            std::cout << "111write to name table 0x82" << hex(pData, 2) << std::endl;
-        }
         this->data[addr & 0x3FF] = pData;
     }
 
