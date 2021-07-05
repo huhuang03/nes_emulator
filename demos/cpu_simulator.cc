@@ -80,7 +80,8 @@ bool CPUSimulator::OnUserUpdate(float fElapsedTime) {
     DrawSprite(648, 348, nes.ppu.getPattern(1, nSelectPalette));
 
 
-    uiPPU->uiNameTable1->draw(this, 0, 0, nes.ppu.getPattern(0, nSelectPalette));
+    DrawSprite(0, 0, nes.ppu.GetScreen(), 2);
+//    uiPPU->uiNameTable1->draw(this, 0, 0, nes.ppu.getPattern(0, nSelectPalette));
 //    uiPPU->drawNameTable1No(this, 0, 0);
     return true;
 }

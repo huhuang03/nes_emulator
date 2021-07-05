@@ -28,29 +28,15 @@ namespace th {
         void write(uint16_t addr, uint8_t data);
 
     public:
-
-    private:
-        PPU *ppu = nullptr;
-
-        union loopy_register {
-            struct {
-                uint16_t coarse_x: 5;
-                uint16_t coarse_y: 5;
-                uint16_t nametable_x: 1;
-                uint16_t nametable_y: 1;
-                uint16_t fine_y: 3;
-                uint16_t unused: 1;
-            };
-            uint16_t reg = 0x0000;
-        };
-
-        loopy_register vram_addr;
-        loopy_register tram_addr;
 //        uint16_t ppu_address = 0x0000;
         // Address write to low byte
         uint8_t address_latch = 0x00;
         uint8_t ppu_data_buffer = 0x00;
-        uint8_t fine_x = 0x00;
+
+
+    private:
+        PPU *ppu = nullptr;
+
 
         void forward_ppu_address();
     };

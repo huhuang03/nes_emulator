@@ -53,6 +53,8 @@ namespace th {
 
         friend class Pattern;
 
+        friend class PPU;
+
     public:
         // I don't know what's the nmi
         bool nmi = false;
@@ -98,7 +100,7 @@ namespace th {
         olc::Pixel getColorInPalette(int palette, int index);
 
         // Debugging Utilities
-        olc::Sprite &GetScreen();
+        olc::Sprite *GetScreen();
 
         bool frame_complete = false;
 
@@ -157,6 +159,34 @@ namespace th {
             uint8_t reg;
         } control;
 
+
+        union loopy_register {
+            struct {
+                uint16_t coarse_x: 5;
+                uint16_t coarse_y: 5;
+                uint16_t nametable_x: 1;
+                uint16_t nametable_y: 1;
+                uint16_t fine_y: 3;
+                uint16_t unused: 1;
+            };
+            uint16_t reg = 0x0000;
+        };
+
+        uint8_t bg_next_tile_id = 0x00;
+        uint8_t bg_next_tile_attrib = 0x00;
+        uint8_t bg_next_tile_lsb = 0x00;
+        uint8_t bg_next_tile_msb = 0x00;
+
+        uint16_t bg_shifter_pattern_lo = 0x0000;
+        uint16_t bg_shifter_pattern_hi = 0x0000;
+
+        uint16_t bg_shifter_attrib_lo  = 0x0000;
+        uint16_t bg_shifter_attrib_hi  = 0x0000;
+
+        uint8_t fine_x = 0x00;
+    public:
+        loopy_register vram_addr;
+        loopy_register tram_addr;
     };
 }
 #endif //NES_PPU_H
