@@ -157,9 +157,6 @@ namespace th {
             uint8_t reg;
         } control;
 
-
-    private:
     };
-
 }
 #endif //NES_PPU_H

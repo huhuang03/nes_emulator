@@ -29,6 +29,8 @@ namespace th {
             switch (addr) {
                 case OP_CONTROL:
                     data = ppu->control.reg;
+                    tram_addr.nametable_x = ppu->control.nametable_x;
+                    tram_addr.nametable_y = ppu->control.nametable_y;
                     break;
                 case OP_MASK:
                     data = ppu->mask.reg;
@@ -65,17 +67,35 @@ namespace th {
             case OP_OAM_DATA:    // ignore for now
                 break;
             case OP_SCROLL:    // Scroll
-//            std::cout << "why you read from scroll" << std::endl;
+                if (address_latch == 0) {
+                    fine_x = data & 0x07;
+                    tram_addr.coarse_x = data >> 3;
+                    address_latch = 1;
+                } else {
+                    tram_addr.fine_y = data & 0x07;
+                    tram_addr.coarse_y = data >> 3;
+                    address_latch = 0;
+                }
                 break;
             case OP_ADDR:    // PPU Address
-//            std::cout << "why you read ppu address?" << std::endl;
+                if (address_latch == 0) {
+                    // First set the high byte(6)
+                    // the rest or is duoyu, but I set it for now
+                    tram_addr.reg = data << 8 | (tram_addr.reg & 0xff);
+                    address_latch = 1;
+                } else {
+                    // Then set the low byte()
+                    tram_addr.reg = (tram_addr.reg & 0xff00) | data;
+                    vram_addr = tram_addr;
+                    address_latch = 0;
+                }
                 break;
             case OP_DATA:    // PPU Data
                 // delayed one cycle, I dont know why
                 data = ppu_data_buffer;
-                ppu_data_buffer = ppu->ppuRead(ppu_address);
+                ppu_data_buffer = ppu->ppuRead(vram_addr.reg);
                 // palette has no delay
-                if (ppu_address >= ppu->palette.addr_min) data = ppu_data_buffer;
+                if (vram_addr.reg >= ppu->palette.addr_min) data = ppu_data_buffer;
                 forward_ppu_address();
                 break;
         }
@@ -105,16 +125,16 @@ namespace th {
                 if (address_latch == 0) {
                     // First set the high byte(6)
                     // the rest or is duoyu, but I set it for now
-                    ppu_address = (data & 0x003F) << 8 | (ppu_address & 0xff);
+                    vram_addr.reg = (data & 0x003F) << 8 | (vram_addr.reg & 0xff);
                     address_latch = 1;
                 } else {
                     // Then set the low byte()
-                    ppu_address = (ppu_address & 0xff00) | data;
+                    vram_addr.reg = (vram_addr.reg & 0xff00) | data;
                     address_latch = 0;
                 }
                 break;
             case OP_DATA:
-                ppu->ppuWrite(ppu_address, data);
+                ppu->ppuWrite(vram_addr.reg, data);
                 forward_ppu_address();
                 break;
         }
@@ -126,7 +146,7 @@ namespace th {
 
     void Bridge::forward_ppu_address() {
         // I don't know why 32 now.
-        ppu_address += (ppu->control.increment_mode ? 32 : 1);
+        vram_addr.reg += (ppu->control.increment_mode ? 32 : 1);
     }
 
 }
