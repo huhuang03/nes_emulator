@@ -1,21 +1,13 @@
+Stop at chapter5 because seems like that I'm not interested in that now.
+
 * TODO
-how can I test the cpu.
 
 This is a [[https://www.youtube.com/watch?v=nViZg02IMQo&list=PLrOv9FMX8xJHqMvSGB_9G9nZZ_4IgteYf][practice project]].
 
-It's out of my control now. I think.
-
-https://www.youtube.com/watch?v=-THeUXqR3zY&t=1818s strange
-
-* How to build
-This is a stand cmake project without library. So just build like the simple cmake project.
-
-* PPU
-https://www.youtube.com/watch?v=8XmxKPJDGU0&list=PLrOv9FMX8xJHqMvSGB_9G9nZZ_4IgteYf&index=4 17:02 ppu community with cpu
-
-* Track:
-https://www.youtube.com/watch?v=8XmxKPJDGU0&list=PLrOv9FMX8xJHqMvSGB_9G9nZZ_4IgteYf&index=4
-
-
-* Note
-Fuck 0xc037 is the clean splite table.
+* Build
+#+BEGIN_SRC shell
+mkdir build
+cd build
+cmake ..
+cmake --build .
+#+END_SRC
