@@ -51,9 +51,9 @@ TEST(CPUTEST, CompareCPU) {
 
     std::map<std::uint16_t, std::string> compareAssemble = compareBus.cpu.disassemble(0x0, 0xFFFF);
 
-    std::cout << "cpu1, 0xc291: " << rightAssemble.find(0xC291)->second << std::endl;
-    std::cout << "cpu2, 0xc291: " << compareAssemble.find(0xC291)->second << std::endl;
-    return;
+//    std::cout << "cpu1, 0xc291: " << rightAssemble.find(0xC291)->second << std::endl;
+//    std::cout << "cpu2, 0xc291: " << compareAssemble.find(0xC291)->second << std::endl;
+//    return;
 
     auto it1 = rightAssemble.begin();
     auto it2 = compareAssemble.begin();
@@ -62,7 +62,6 @@ TEST(CPUTEST, CompareCPU) {
         ASSERT_EQ(it1->second, it2->second);
         it1++;
         it2++;
-//        std::cout << it1->first << std::endl;
     }
 
     uint32_t max = 0xffffff;

@@ -901,14 +901,14 @@ namespace th {
 
 
     uint8_t CPU::RTI() {
-        // cpuRead the pc
-        pc = pop16();
-
         // cpuRead the status
-        status = pop16();
+        status = pop();
         // clear the B and U
         setFlag(B, false);
         setFlag(U, false);
+
+        // cpuRead the pc
+        pc = pop16();
         return 0;
     }
 
